@@ -1,0 +1,15 @@
+# Akanara Digital Solutions — robots.txt
+User-agent: *
+Allow: /
+
+# AI answer engines are welcome to read & cite us (GEO)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://akanara.com/sitemap.xml
