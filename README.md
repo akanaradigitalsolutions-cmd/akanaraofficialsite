@@ -5,7 +5,8 @@ No build step, no server runtime required — it runs perfectly on **Hostinger S
 
 - **Motion:** GSAP + ScrollTrigger + Lenis (loaded from CDN, runs client-side)
 - **Type:** Clash Display · Satoshi · JetBrains Mono (Fontshare)
-- **Design:** obsidian base · Balinese gold `#E8A33D` + plasma violet `#6E5BF2`
+- **Design:** Sunlit Tropical — warm white `#FBF6EF` · ink `#211A15` · teal `#109C97` · coral `#EA5A32` · gold `#E8A33D`
+- **Images:** bright, image-led layout. Every photo has a graceful tropical fallback. See **`IMAGES.md`** for the full image map + how to swap in your own.
 
 ---
 

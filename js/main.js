@@ -7,7 +7,16 @@
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Hero canvas: luminous constellation field ---------- */
+  /* ---------- Image fallback: reveal the tropical gradient if a photo fails ---------- */
+  (function mediaFallback() {
+    document.querySelectorAll(".media > img").forEach(function (img) {
+      function broke() { var m = img.closest(".media"); if (m) m.classList.add("is-broken"); }
+      if (img.complete && img.naturalWidth === 0) broke();
+      img.addEventListener("error", broke);
+    });
+  })();
+
+  /* ---------- Hero canvas: luminous constellation field (only if #field present) ---------- */
   (function heroField() {
     var c = document.getElementById("field");
     if (!c) return;
