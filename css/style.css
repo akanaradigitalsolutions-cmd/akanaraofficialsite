@@ -131,10 +131,22 @@ header.nav.scrolled{background:rgba(251,246,239,.82);backdrop-filter:blur(14px);
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:140px 0 90px;overflow:hidden}
 #field{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(78% 62% at 50% 42%,transparent 55%,rgba(251,246,239,.55) 100%)}
-.hero .blob{animation:drift 20s ease-in-out infinite}
-.hero .blob.b1{width:560px;height:560px;background:radial-gradient(circle,rgba(16,156,151,.34),transparent 70%);top:-140px;right:-100px}
-.hero .blob.b2{width:480px;height:480px;background:radial-gradient(circle,rgba(234,90,50,.26),transparent 70%);bottom:-200px;left:-140px;animation-duration:26s;animation-direction:reverse}
-@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(36px,-28px)}}
+/* optional background video (drop assets/hero.mp4 to enable) */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1s ease}
+.hero-video.on{opacity:1}
+.hero.has-video::after{background:rgba(251,246,239,.5)}
+/* Bienville-style glowing bubbles: drift + scale + colour-cycle + blur pulse */
+.hero .bubble{position:absolute;border-radius:50%;z-index:0;opacity:.5;pointer-events:none;will-change:transform,filter,background-color}
+.hero .bubble.x1{width:460px;height:460px;top:-90px;right:3%;background:#12b0a8;filter:blur(58px);animation:bubMove1 26s ease-in-out infinite,bubHueA 19s ease-in-out infinite}
+.hero .bubble.x2{width:400px;height:400px;bottom:-140px;left:1%;background:#ea5a32;filter:blur(58px);opacity:.42;animation:bubMove2 31s ease-in-out infinite,bubHueB 23s ease-in-out infinite}
+.hero .bubble.x3{width:300px;height:300px;top:20%;left:56%;background:#f2c46e;filter:blur(54px);opacity:.4;animation:bubMove3 24s ease-in-out infinite,bubHueC 21s ease-in-out infinite}
+.hero .bubble.x4{width:250px;height:250px;bottom:14%;right:22%;background:#12b0a8;filter:blur(52px);opacity:.36;animation:bubMove1 29s ease-in-out infinite reverse,bubHueB 26s ease-in-out infinite}
+@keyframes bubMove1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-46px,38px) scale(1.16)}}
+@keyframes bubMove2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(56px,-30px) scale(1.12)}}
+@keyframes bubMove3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(38px,28px) scale(1.1)}66%{transform:translate(-28px,-18px) scale(.94)}}
+@keyframes bubHueA{0%,100%{background-color:#12b0a8;filter:blur(58px)}33%{background-color:#f2c46e}66%{background-color:#ea5a32;filter:blur(76px)}}
+@keyframes bubHueB{0%,100%{background-color:#ea5a32;filter:blur(58px)}50%{background-color:#f2c46e;filter:blur(76px)}}
+@keyframes bubHueC{0%,100%{background-color:#f2c46e;filter:blur(54px)}50%{background-color:#12b0a8;filter:blur(72px)}}
 .hero-inner{position:relative;z-index:2;width:100%}
 .hero-eyebrow{margin-bottom:38px}
 .hero-eyebrow .mono{color:var(--teal-deep)}
@@ -406,10 +418,9 @@ footer{border-top:1px solid var(--line);padding:80px 0 44px;background:var(--san
   .wrap{padding:0 22px}
   header.nav{padding:18px 22px}
   header.nav.scrolled{padding:13px 22px}
-  .hero{padding:150px 0 70px}
+  .hero{padding:130px 0 70px}
   .hero h1{font-size:clamp(2.4rem,10vw,3.4rem)}
-  .hero-figure{margin-top:50px}
-  .hero-figure .media{aspect-ratio:4/3}
+  .hero .bubble.x3,.hero .bubble.x4{display:none}
   .navlinks{display:none}
   .burger{display:flex}
   .sec-head{padding:100px 0 46px}

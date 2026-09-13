@@ -87,6 +87,30 @@ The form uses **Web3Forms** — perfect for static hosting (no PHP/Node needed).
 
 ---
 
+## 🎬 Hero background video (optional)
+
+The hero already animates on its own — glowing **bubbles** (drift + colour-cycle + blur
+pulse) layered under an interactive particle field. If you also want a background **video**
+(like bienvillecapital.com), the hero is already wired for it:
+
+1. Download a short, loop-friendly clip (see sources below). Pick something **light/bright**
+   and abstract so the dark headline stays readable.
+2. Save it as **`assets/hero.mp4`** (ideally also `assets/hero.webm`). Keep it small —
+   **under ~5 MB**, ~10–20 s, 1080p, muted.
+3. That's it. The `<video class="hero-video">` fades in automatically when the file loads;
+   if there's no file, the bubbles show instead. A soft overlay keeps the text readable.
+
+**Free, commercial-use, no attribution** clip sources:
+- [Coverr](https://coverr.co) — built specifically for website hero background loops
+- [Mixkit](https://mixkit.co) — smaller but well-curated
+- [Pexels Video](https://www.pexels.com/videos/) and [Pixabay Video](https://pixabay.com/videos/) — huge libraries, 4K
+
+Search terms that suit the brand: *abstract gradient, fluid ink, soft particles, aerial Bali,
+ocean surface, light bokeh, slow motion smoke.* Compress before upload (e.g. handbrake, or
+squoosh-style tools) so it stays fast on the Single plan.
+
+---
+
 ## ⚡ Optional performance upgrades (nice-to-have)
 
 The site is already fast and passes reduced-motion/accessibility basics. To squeeze more:

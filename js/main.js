@@ -31,6 +31,17 @@
     });
   })();
 
+  /* ---------- Hero background video: show only if a real file loads ---------- */
+  (function heroVideo() {
+    var hv = document.querySelector(".hero-video");
+    if (!hv) return;
+    hv.addEventListener("canplay", function () {
+      hv.classList.add("on");
+      var hero = hv.closest(".hero");
+      if (hero) hero.classList.add("has-video");
+    });
+  })();
+
   /* ---------- Hero canvas: luminous constellation field (only if #field present) ---------- */
   (function heroField() {
     var c = document.getElementById("field");
