@@ -79,10 +79,11 @@ The form uses **Web3Forms** — perfect for static hosting (no PHP/Node needed).
 - [ ] **Contact form:** add your Web3Forms access key (above).
 - [ ] **Email address:** replace `hello@akanara.com` if you use a different inbox (appears in the pages + footer + schema).
 - [ ] **Social links:** the footer Instagram / LinkedIn / WhatsApp links are `#` placeholders — add real URLs.
-- [ ] **OG share image:** add `assets/og-image.jpg` (1200×630) so links preview nicely on WhatsApp/LinkedIn/etc. The `<meta og:image>` tags already point to it.
-- [ ] **Real numbers:** the stats (40+ projects, 12+ products, 98% retention, 24/7) are placeholders from the brief — set them to your real figures in `index.html` and `work.html`.
-- [ ] **Portfolio:** `work.html` cards are scaffolded from your ventures — swap in real screenshots/details as case studies are ready.
-- [ ] **Analytics:** paste your **GA4 / GTM** snippet before `</head>` on each page when ready.
+- [x] **OG share image:** a ready-made `assets/og-image.png` (1200×630) is included and wired into every page. To regenerate it with the Clash Display font, open `assets/og-image.html` in your browser (edit the text first if you like) and screenshot it at 1200×630 over `assets/og-image.png`.
+- [ ] **Analytics (one place):** open `js/main.js`, set `GTM_ID = "GTM-XXXXXXX"` to your Google Tag Manager container id. That switches GTM — and GA4 configured inside it — on across **all** pages at once. Leave it empty to keep analytics off (no wasted requests).
+- [ ] **Real numbers:** the homepage stats and the case-study figures (e.g. "3× ROAS") are representative placeholders — set them to your real numbers in `index.html` and the `work-*.html` files.
+- [ ] **Case studies:** the six `work-*.html` pages have scaffolded copy — refine each with the real story.
+- [ ] **Real images:** replace the LoremFlickr placeholders with your own photos/screenshots — `IMAGES.md` maps every slot.
 
 ---
 
