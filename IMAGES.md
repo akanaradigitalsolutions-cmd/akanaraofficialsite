@@ -83,7 +83,8 @@ Keep the `width`/`height` attributes and `loading="lazy"` (except the hero, whic
 is `fetchpriority="high"`) so the page stays fast and doesn't jump while loading.
 
 ### Sizing cheatsheet
-- Hero / story (portrait): ~900×1100
+- Hero (landscape, full-width): ~1600×800
+- Story (portrait): ~900×1100
 - Wide work cards / studio band: ~1400–1600 wide
 - Small work cards (portrait): ~700×900
 - Service images: ~900×700

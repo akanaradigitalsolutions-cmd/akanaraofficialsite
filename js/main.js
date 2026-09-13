@@ -170,6 +170,11 @@
     document.querySelectorAll(".reveal").forEach(function (e) {
       e.style.opacity = 1; e.style.transform = "none";
     });
+    // no GSAP: still show the real stat numbers (no count-up)
+    document.querySelectorAll(".stat .num").forEach(function (el) {
+      var s = el.querySelector("span");
+      if (s) s.textContent = el.dataset.count;
+    });
   }
 
   /* Safety net: force any still-hidden reveal visible after 1.2s */
