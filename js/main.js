@@ -64,9 +64,9 @@
         for (var j = i + 1; j < pts.length; j++) {
           var q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy);
           if (d < 130 * dpr) {
-            var a = (1 - d / (130 * dpr)) * 0.22;
-            ctx.strokeStyle = "rgba(232,163,61," + a + ")";
-            ctx.lineWidth = 0.6 * dpr;
+            var a = (1 - d / (130 * dpr)) * 0.30;
+            ctx.strokeStyle = "rgba(16,156,151," + a + ")";
+            ctx.lineWidth = 0.7 * dpr;
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
           }
         }
@@ -75,8 +75,8 @@
         if (md < 200 * dpr) glow = 1 - md / (200 * dpr);
         ctx.beginPath();
         ctx.fillStyle = glow > 0
-          ? "rgba(242,196,110," + (0.4 + glow * 0.6) + ")"
-          : "rgba(160,150,190,.5)";
+          ? "rgba(234,90,50," + (0.35 + glow * 0.55) + ")"
+          : "rgba(33,26,21,.28)";
         ctx.arc(p.x, p.y, p.r + glow * 1.6 * dpr, 0, Math.PI * 2);
         ctx.fill();
       }

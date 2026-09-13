@@ -127,11 +127,15 @@ header.nav.scrolled{background:rgba(251,246,239,.82);backdrop-filter:blur(14px);
 .link:hover{gap:16px;color:var(--coral)}
 .link svg{width:16px;height:16px}
 
-/* ===== HERO (minimal) ===== */
-.hero{position:relative;padding:200px 0 110px;overflow:hidden}
-.hero .blob.b1{width:560px;height:560px;background:radial-gradient(circle,rgba(16,156,151,.32),transparent 70%);top:-140px;right:-100px}
-.hero .blob.b2{width:480px;height:480px;background:radial-gradient(circle,rgba(234,90,50,.24),transparent 70%);bottom:-200px;left:-140px}
-.hero-inner{position:relative;z-index:2}
+/* ===== HERO (minimal, animated) ===== */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:140px 0 90px;overflow:hidden}
+#field{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(78% 62% at 50% 42%,transparent 55%,rgba(251,246,239,.55) 100%)}
+.hero .blob{animation:drift 20s ease-in-out infinite}
+.hero .blob.b1{width:560px;height:560px;background:radial-gradient(circle,rgba(16,156,151,.34),transparent 70%);top:-140px;right:-100px}
+.hero .blob.b2{width:480px;height:480px;background:radial-gradient(circle,rgba(234,90,50,.26),transparent 70%);bottom:-200px;left:-140px;animation-duration:26s;animation-direction:reverse}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(36px,-28px)}}
+.hero-inner{position:relative;z-index:2;width:100%}
 .hero-eyebrow{margin-bottom:38px}
 .hero-eyebrow .mono{color:var(--teal-deep)}
 .hero h1{font-size:clamp(3rem,7.2vw,6.6rem);font-weight:500;letter-spacing:-.03em;line-height:1.0;max-width:16ch}
