@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 168" width="440" height="336" role="img" aria-label="Akanara Digital Solutions">
+  <defs><linearGradient id="ak-gold" x1="6" y1="3" x2="34" y2="34" gradientUnits="userSpaceOnUse"><stop stop-color="#F2C46E"/><stop offset="1" stop-color="#E8A33D"/></linearGradient></defs>
+  <g transform="translate(82,14) scale(1.4)"><path fill-rule="evenodd" fill="url(#ak-gold)" d="M20 3 L34 34 H27 L20 17 L13 34 H6 Z M17.4 30 a2.6 2.6 0 1 1 5.2 0 a2.6 2.6 0 1 1 -5.2 0 Z"/></g>
+  <text x="110" y="120" text-anchor="middle" font-family="'Clash Display','Satoshi',system-ui,sans-serif" font-weight="600" font-size="38" letter-spacing="-0.6" fill="#211A15">Akanara</text>
+  <text x="110" y="142" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,monospace" font-size="9" letter-spacing="4" fill="#8A7E70">DIGITAL SOLUTIONS</text>
+</svg>
