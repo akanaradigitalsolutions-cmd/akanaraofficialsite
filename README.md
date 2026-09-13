@@ -97,8 +97,11 @@ pulse) layered under an interactive particle field. If you also want a backgroun
    and abstract so the dark headline stays readable.
 2. Save it as **`assets/hero.mp4`** (ideally also `assets/hero.webm`). Keep it small —
    **under ~5 MB**, ~10–20 s, 1080p, muted.
-3. That's it. The `<video class="hero-video">` fades in automatically when the file loads;
-   if there's no file, the bubbles show instead. A soft overlay keeps the text readable.
+3. That's it. The `<video class="hero-video">` loads, **autoplays (muted, looping,
+   inline)** and fades in automatically; if there's no file, the animated bubbles show
+   instead. A soft overlay keeps the text readable. If a browser blocks muted autoplay,
+   playback starts on the first tap/scroll. Visitors on a data-saver connection or with
+   "reduce motion" enabled skip the video download entirely and see the bubbles.
 
 **Free, commercial-use, no attribution** clip sources:
 - [Coverr](https://coverr.co) — built specifically for website hero background loops

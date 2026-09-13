@@ -31,15 +31,45 @@
     });
   })();
 
-  /* ---------- Hero background video: show only if a real file loads ---------- */
+  /* ---------- Hero background video: autoplay a real file if one is present ---------- */
   (function heroVideo() {
     var hv = document.querySelector(".hero-video");
     if (!hv) return;
-    hv.addEventListener("canplay", function () {
+    // Respect reduced-motion and data-saver — the animated bubbles cover for it.
+    var saveData = navigator.connection && navigator.connection.saveData;
+    if (reduce || saveData) { hv.remove(); return; }
+
+    var shown = false;
+    function show() {
+      if (shown) return; shown = true;
       hv.classList.add("on");
       var hero = hv.closest(".hero");
       if (hero) hero.classList.add("has-video");
-    });
+    }
+    function play() {
+      // muted + playsinline lets this autoplay; play() returns a promise we must catch
+      var p = hv.play();
+      if (p && typeof p.catch === "function") p.catch(function () {});
+    }
+
+    hv.addEventListener("loadeddata", function () { show(); play(); });
+    hv.addEventListener("canplay", function () { show(); play(); });
+    hv.addEventListener("playing", show);
+
+    // The markup keeps preload="none" off the critical path — kick loading now,
+    // then start playback (the <video autoplay> attribute alone can be ignored).
+    try { hv.load(); } catch (e) {}
+    play();
+
+    // If a browser blocks muted autoplay, start on the first user gesture/scroll.
+    var events = ["pointerdown", "touchstart", "keydown", "scroll"];
+    var kicked = false;
+    function kick() {
+      if (kicked) return; kicked = true;
+      play();
+      events.forEach(function (ev) { window.removeEventListener(ev, kick); });
+    }
+    events.forEach(function (ev) { window.addEventListener(ev, kick, { passive: true }); });
   })();
 
   /* ---------- Hero canvas: luminous constellation field (only if #field present) ---------- */
@@ -154,61 +184,85 @@
     });
   });
 
-  /* ---------- GSAP reveals + hero entrance + count-ups ---------- */
-  if (window.gsap) {
-    gsap.registerPlugin(ScrollTrigger);
-    if (!reduce) {
-      var heroLines = document.querySelectorAll(".hero h1 .ln > span");
-      if (heroLines.length) {
-        gsap.set(heroLines, { yPercent: 115 });
-        var tl = gsap.timeline({ delay: 0.25 });
-        tl.to(heroLines, { yPercent: 0, duration: 1.05, stagger: 0.09, ease: "power4.out" })
-          .from(".hero-eyebrow", { opacity: 0, y: 16, duration: 0.7 }, "-=.9")
-          .from(".hero-sub", { opacity: 0, y: 24, duration: 0.8 }, "-=.7");
-      }
-      gsap.utils.toArray(".reveal").forEach(function (el) {
-        gsap.to(el, {
-          opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 88%" }
-        });
-      });
-      gsap.utils.toArray(".stat .num").forEach(function (el) {
-        var target = +el.dataset.count, span = el.querySelector("span");
-        if (!span) return;
-        ScrollTrigger.create({
-          trigger: el, start: "top 85%", once: true,
-          onEnter: function () {
-            gsap.to({ v: 0 }, {
-              v: target, duration: 1.6, ease: "power2.out",
-              onUpdate: function () { span.textContent = Math.round(this.targets()[0].v); }
-            });
-          }
-        });
-      });
-    } else {
-      gsap.set(".reveal", { opacity: 1, y: 0 });
-      document.querySelectorAll(".stat .num").forEach(function (el) {
-        var span = el.querySelector("span");
-        if (span) span.textContent = el.dataset.count;
-      });
+  /* ---------- Hero headline entrance (GSAP if present; degrades to visible) ---------- */
+  if (window.gsap && !reduce) {
+    if (window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+    var heroLines = document.querySelectorAll(".hero h1 .ln > span");
+    if (heroLines.length) {
+      gsap.set(heroLines, { yPercent: 115 });
+      var tl = gsap.timeline({ delay: 0.2 });
+      tl.to(heroLines, { yPercent: 0, duration: 1.05, stagger: 0.09, ease: "power4.out" })
+        .from(".hero-eyebrow", { opacity: 0, y: 16, duration: 0.7 }, "-=.9")
+        .from(".hero-foot", { opacity: 0, y: 22, duration: 0.8 }, "-=.65")
+        .from(".scrollcue", { opacity: 0, y: 14, duration: 0.6 }, "-=.5");
     }
-  } else {
-    document.querySelectorAll(".reveal").forEach(function (e) {
-      e.style.opacity = 1; e.style.transform = "none";
-    });
-    // no GSAP: still show the real stat numbers (no count-up)
-    document.querySelectorAll(".stat .num").forEach(function (el) {
-      var s = el.querySelector("span");
-      if (s) s.textContent = el.dataset.count;
-    });
   }
 
-  /* Safety net: force any still-hidden reveal visible after 1.2s */
-  setTimeout(function () {
-    document.querySelectorAll(".reveal").forEach(function (e) {
-      if (getComputedStyle(e).opacity === "0") { e.style.opacity = 1; e.style.transform = "none"; }
+  /* ---------- Scroll reveals + count-ups (IntersectionObserver — no dependency) ----------
+     Every `.reveal` fades/slides in as it enters the viewport, so sections animate on
+     the way down even when GSAP isn't available. Optional variant classes on an element
+     change the motion: `.r-left` / `.r-right` slide in from the side, `.r-zoom` scales up. */
+  (function scrollReveal() {
+    var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    var nums = Array.prototype.slice.call(document.querySelectorAll(".stat .num[data-count]"));
+
+    function showNumber(el) {
+      var s = el.querySelector("span"); if (s) s.textContent = el.dataset.count;
+    }
+
+    // Reduced motion, or no IntersectionObserver: show everything, skip the animation.
+    if (reduce || !("IntersectionObserver" in window)) {
+      reveals.forEach(function (el) { el.classList.add("is-in"); });
+      nums.forEach(showNumber);
+      return;
+    }
+
+    // Cascade: elements sharing a parent ripple in with a small incremental delay.
+    var counts = new Map();
+    reveals.forEach(function (el) {
+      var p = el.parentNode;
+      var i = counts.get(p) || 0;
+      if (i) el.style.transitionDelay = Math.min(i * 0.08, 0.4) + "s";
+      counts.set(p, i + 1);
     });
-  }, 1200);
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    reveals.forEach(function (el) { io.observe(el); });
+
+    // Count-ups: animate the stat numbers once, when they scroll into view.
+    function runCount(el) {
+      var target = +el.dataset.count, span = el.querySelector("span");
+      if (!span || isNaN(target)) { showNumber(el); return; }
+      var start = null, dur = 1500;
+      function frame(t) {
+        if (start === null) start = t;
+        var k = Math.min((t - start) / dur, 1);
+        span.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))); // easeOutCubic
+        if (k < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+    var nio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { runCount(e.target); nio.unobserve(e.target); }
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (el) { nio.observe(el); });
+  })();
+
+  /* Safety net: if a reveal is on-screen but somehow still hidden, show it (keeps
+     below-the-fold elements untouched so their scroll animation still fires). */
+  setTimeout(function () {
+    if (reduce) return;
+    document.querySelectorAll(".reveal:not(.is-in)").forEach(function (e) {
+      var r = e.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) e.classList.add("is-in");
+    });
+  }, 1500);
 
   /* ---------- Contact form (Web3Forms — static-hosting friendly) ---------- */
   var form = document.getElementById("leadForm");
