@@ -3,6 +3,11 @@
 # Performance, security, and clean error handling for a static site.
 # =========================================================================
 
+# ----- Serve the static site first -----
+# Force index.html as the homepage. This way a stray index.php (e.g. a
+# leftover WordPress install) can never shadow the static site again.
+DirectoryIndex index.html index.htm
+
 # ----- Custom error page -----
 ErrorDocument 404 /404.html
 
