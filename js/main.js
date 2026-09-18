@@ -245,6 +245,26 @@
     });
   }, 1500);
 
+  /* ---------- Cinematic footer: magnetic buttons + back-to-top ---------- */
+  (function cineFooter() {
+    var back = document.querySelector(".cine-top");
+    if (back) back.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    });
+
+    // Magnetic hover — only where a real pointer can hover, and not under reduced motion.
+    if (reduce || !window.matchMedia("(hover: hover)").matches) return;
+    document.querySelectorAll(".magnetic").forEach(function (el) {
+      el.addEventListener("mousemove", function (e) {
+        var r = el.getBoundingClientRect();
+        var x = e.clientX - r.left - r.width / 2;
+        var y = e.clientY - r.top - r.height / 2;
+        el.style.transform = "translate(" + (x * 0.3) + "px," + (y * 0.3) + "px)";
+      });
+      el.addEventListener("mouseleave", function () { el.style.transform = ""; });
+    });
+  })();
+
   /* ---------- Contact form (Web3Forms — static-hosting friendly) ---------- */
   var form = document.getElementById("leadForm");
   if (form) {
