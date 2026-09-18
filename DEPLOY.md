@@ -1,57 +1,50 @@
-# Auto-deploy: Git → Hostinger
+# Deploy: Hostinger built-in Git
 
-Every time code is pushed to the branch **`claude/optimistic-hypatia-7sdlup`**, GitHub
-automatically uploads the site to your Hostinger `public_html` over FTP. No more manual
-zip uploads. (Config lives in `.github/workflows/deploy.yml`.)
-
-You only have to set this up **once**.
+Hostinger pulls the site straight from GitHub — **no FTP, no secrets, no build step.**
+This is the method we use (the old GitHub Action → FTP approach was removed because the
+Single plan has no SSH and FTP was timing out).
 
 ---
 
-## 1. Get your FTP details from Hostinger
-hPanel → **Files → FTP Accounts**. Note (or create an account and note):
+## One-time setup
 
-| You need | Example |
-|----------|---------|
-| **FTP hostname / IP** | `ftp.akanara.com` or the IP shown (e.g. `123.45.67.89`) |
-| **FTP username** | `u345843814.akanara` |
-| **FTP password** | (set/reset it here and copy it) |
+1. hPanel → **Tingkat lanjut (Advanced) → GIT**.
+2. Click **Hubungkan dengan GitHub** and authorize Hostinger to access the repo
+   `akanaradigitalsolutions-cmd/akanaraofficialsite` (it's private — the GitHub
+   authorization is what grants access).
+3. Create the deployment with:
+   | Field | Value |
+   |-------|-------|
+   | **Repository** | `akanaradigitalsolutions-cmd/akanaraofficialsite` |
+   | **Branch** | `claude/optimistic-hypatia-7sdlup` |
+   | **Directory / install path** | `public_html` |
 
-> Tip: the account's directory must be `public_html` (the site root). Most main FTP
-> accounts already are.
+   > ⚠️ The directory **must be `public_html`** (the site root). If it deploys into a
+   > subfolder, `akanara.com` won't show the site.
 
-## 2. Add them to GitHub as secrets
-GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**.
-Add these **three** (names must match exactly):
+4. **Deploy.** Hostinger clones the repo into `public_html` and the site goes live.
 
-- `FTP_HOST` → the hostname/IP
-- `FTP_USERNAME` → the username
-- `FTP_PASSWORD` → the password
+> **If Hostinger says the folder must be empty:** first delete the old contents of
+> `public_html` (any leftover WordPress files and `assets.XXXX` / `css.XXXX` duplicates —
+> keep folders that start with a dot, like `.well-known`), then deploy.
 
-Secrets are encrypted and never shown in logs. **Never** put the password in a file.
+## Auto-deploy on every push
 
-## 3. Prepare `public_html` once (clean slate)
-So the live site matches the repo exactly, make sure `public_html` contains only the
-site (or is empty). If any old WordPress files or `assets.5432`-style duplicates are
-still there, delete them now (keep folders starting with a dot, like `.well-known`).
-After the first deploy, the pipeline keeps everything in sync automatically.
+Connecting through GitHub usually turns on **auto-deployment** automatically (Hostinger
+installs a webhook). If pushes don't update the site on their own:
 
-## 4. Deploy
-- **Automatic:** push any change to the branch → it deploys in ~1 minute.
-- **Manual:** GitHub → **Actions → Deploy to Hostinger → Run workflow**.
+- In the GIT page, find this deployment's **webhook URL** and copy it.
+- GitHub → repo **Settings → Webhooks → Add webhook** → paste the URL,
+  Content type `application/json`, "Just the push event", Active. Save.
 
-Watch progress in the **Actions** tab. Green check = live. Refresh
-`akanara.com` (Ctrl/Cmd+Shift+R).
-
----
+After that, **every push to `claude/optimistic-hypatia-7sdlup` updates the live site**
+in under a minute. (There's also a manual **Deploy / Pull** button on the GIT page.)
 
 ## Notes
-- **Protocol:** set to `ftps` (secure). If Hostinger rejects it, change `protocol: ftps`
-  to `protocol: ftp` in `.github/workflows/deploy.yml`.
-- **What gets published:** everything in the repo **except** dev-only files
-  (this file, `README.md`, `IMAGES.md`, `.github/`, logo source, etc. — see the
-  `exclude` list in the workflow).
-- **First run fails?** Almost always a wrong secret. Re-check `FTP_HOST` (no `ftp://`
-  prefix, no trailing slash) and the username/password, then re-run.
-- **Switching the production branch to `main` later** is a one-line change in the
-  workflow's `branches:` list.
+
+- The whole repo is cloned into `public_html`. Web access to `.git`, `README.md`,
+  `IMAGES.md`, and `DEPLOY.md` is blocked in `.htaccess`, so none of it is exposed.
+- To go live from a different branch later (e.g. `main`), change the branch on the
+  Hostinger GIT deployment — no code change needed.
+- You can safely delete the old `FTP_HOST` / `FTP_USERNAME` / `FTP_PASSWORD` secrets in
+  GitHub → Settings → Secrets — they're no longer used.

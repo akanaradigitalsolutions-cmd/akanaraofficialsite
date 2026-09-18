@@ -16,6 +16,10 @@ ErrorDocument 404 /404.html
 #  you can safely delete this block. If you ever hit a redirect loop, remove it.)
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Block the Git metadata folder (Hostinger's Git deploy clones .git into the web root)
+  RewriteRule (^|/)\.git(/|$) - [F,L]
+
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
@@ -68,7 +72,12 @@ ErrorDocument 404 /404.html
 # ----- Default charset -----
 AddDefaultCharset UTF-8
 
-# ----- Protect dotfiles (e.g. .htaccess itself) -----
+# ----- Protect dotfiles (e.g. .htaccess, and .git files) -----
 <FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# ----- Hide repo/dev docs that Hostinger's Git deploy also copies into public_html -----
+<FilesMatch "^(README|IMAGES|DEPLOY)\.md$">
   Require all denied
 </FilesMatch>
