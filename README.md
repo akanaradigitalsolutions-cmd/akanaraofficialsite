@@ -87,21 +87,17 @@ The form uses **Web3Forms** — perfect for static hosting (no PHP/Node needed).
 
 ---
 
-## 🎬 Hero background video (optional)
+## 🌐 Hero animation (rotating dot-globe)
 
-The hero already animates on its own — glowing **bubbles** (drift + colour-cycle + blur
-pulse) layered under an interactive particle field. If you also want a background **video**
-(like bienvillecapital.com), the hero is already wired for it:
+The hero features a **rotating dot-globe** drawn live with plain canvas 2D
+(`js/main.js` → `heroGlobe`) — no library, so it stays fast on the Single plan. It's built
+from brand-coloured points (teal with gold accents), tilts gently toward the cursor, pauses
+when scrolled out of view or the tab is hidden, and renders a single static frame for
+visitors who prefer reduced motion. Glowing **bubbles** drift behind it for warmth.
 
-1. Download a short, loop-friendly clip (see sources below). Pick something **light/bright**
-   and abstract so the dark headline stays readable.
-2. Save it as **`assets/hero.mp4`** (ideally also `assets/hero.webm`). Keep it small —
-   **under ~5 MB**, ~10–20 s, 1080p, muted.
-3. That's it. The `<video class="hero-video">` loads, **autoplays (muted, looping,
-   inline)** and fades in automatically; if there's no file, the animated bubbles show
-   instead. A soft overlay keeps the text readable. If a browser blocks muted autoplay,
-   playback starts on the first tap/scroll. Visitors on a data-saver connection or with
-   "reduce motion" enabled skip the video download entirely and see the bubbles.
+Tune it inside `heroGlobe`: `rotY += …` (spin speed), `bands` and `* 34` (dot density),
+`tilt` (viewing angle), `cx`/`cy`/`R` (position + size), and the `rgba(...)` fills (colours).
+The background-video layer was removed in favour of this — no `assets/hero.mp4` is needed.
 
 **Free, commercial-use, no attribution** clip sources:
 - [Coverr](https://coverr.co) — built specifically for website hero background loops

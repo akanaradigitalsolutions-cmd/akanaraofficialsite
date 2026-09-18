@@ -31,108 +31,89 @@
     });
   })();
 
-  /* ---------- Hero background video: autoplay a real file if one is present ---------- */
-  (function heroVideo() {
-    var hv = document.querySelector(".hero-video");
-    if (!hv) return;
-    // Respect reduced-motion and data-saver — the animated bubbles cover for it.
-    var saveData = navigator.connection && navigator.connection.saveData;
-    if (reduce || saveData) { hv.remove(); return; }
-
-    var shown = false;
-    function show() {
-      if (shown) return; shown = true;
-      hv.classList.add("on");
-      var hero = hv.closest(".hero");
-      if (hero) hero.classList.add("has-video");
-    }
-    function play() {
-      // muted + playsinline lets this autoplay; play() returns a promise we must catch
-      var p = hv.play();
-      if (p && typeof p.catch === "function") p.catch(function () {});
-    }
-
-    hv.addEventListener("loadeddata", function () { show(); play(); });
-    hv.addEventListener("canplay", function () { show(); play(); });
-    hv.addEventListener("playing", show);
-
-    // The markup keeps preload="none" off the critical path — kick loading now,
-    // then start playback (the <video autoplay> attribute alone can be ignored).
-    try { hv.load(); } catch (e) {}
-    play();
-
-    // If a browser blocks muted autoplay, start on the first user gesture/scroll.
-    var events = ["pointerdown", "touchstart", "keydown", "scroll"];
-    var kicked = false;
-    function kick() {
-      if (kicked) return; kicked = true;
-      play();
-      events.forEach(function (ev) { window.removeEventListener(ev, kick); });
-    }
-    events.forEach(function (ev) { window.addEventListener(ev, kick, { passive: true }); });
-  })();
-
-  /* ---------- Hero canvas: luminous constellation field (only if #field present) ---------- */
-  (function heroField() {
+  /* ---------- Hero canvas: rotating dot-globe (only if #field present) ----------
+     A brand-coloured globe of points, spun with plain canvas 2D — no library, so it
+     stays fast and reliable on static hosting. Reinforces "Made in Bali, for the
+     world." Pauses when off-screen or the tab is hidden, tilts gently toward the
+     cursor, and renders a single static frame under prefers-reduced-motion. */
+  (function heroGlobe() {
     var c = document.getElementById("field");
     if (!c) return;
     var ctx = c.getContext("2d");
-    var w, h, dpr, pts = [], mouse = { x: -999, y: -999 }, raf;
+    var w, h, dpr, R, cx, cy, pts = [], rotY = 0, tilt = -0.42,
+        mx = 0, my = 0, tmx = 0, tmy = 0, raf = null, running = false;
+
+    // Points on a unit sphere (lat/long grid, thinned toward the poles).
+    function build() {
+      pts = [];
+      var bands = 18;
+      for (var i = 1; i < bands; i++) {
+        var phi = (i / bands) * Math.PI - Math.PI / 2;
+        var cphi = Math.cos(phi), sphi = Math.sin(phi);
+        var lon = Math.max(6, Math.round(cphi * 34));
+        for (var j = 0; j < lon; j++) {
+          var lam = (j / lon) * Math.PI * 2;
+          pts.push({ x: cphi * Math.cos(lam), y: sphi, z: cphi * Math.sin(lam),
+                     gold: Math.random() < 0.12 });
+        }
+      }
+    }
 
     function size() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = c.width = innerWidth * dpr;
       h = c.height = c.offsetHeight * dpr;
       c.style.width = innerWidth + "px";
-      var n = Math.min(90, Math.floor(innerWidth / 16));
-      pts = [];
-      for (var i = 0; i < n; i++) {
-        pts.push({
-          x: Math.random() * w, y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.18 * dpr,
-          vy: (Math.random() - 0.5) * 0.18 * dpr,
-          r: (Math.random() * 1.6 + 0.4) * dpr
-        });
-      }
+      var mobile = innerWidth < 760;
+      R = mobile ? Math.min(w, h) * 0.34 : Math.min(h * 0.46, w * 0.28);
+      cx = (mobile ? 0.5 : 0.74) * w;
+      cy = (mobile ? 0.42 : 0.5) * h;
     }
-    function draw() {
+
+    function render() {
       ctx.clearRect(0, 0, w, h);
+      rotY += 0.0016;
+      tmx += (mx - tmx) * 0.05; tmy += (my - tmy) * 0.05;
+      var ay = rotY + tmx * 0.3, ax = tilt + tmy * 0.28;
+      var cY = Math.cos(ay), sY = Math.sin(ay), cX = Math.cos(ax), sX = Math.sin(ax);
       for (var i = 0; i < pts.length; i++) {
         var p = pts[i];
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
-        for (var j = i + 1; j < pts.length; j++) {
-          var q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy);
-          if (d < 130 * dpr) {
-            var a = (1 - d / (130 * dpr)) * 0.30;
-            ctx.strokeStyle = "rgba(16,156,151," + a + ")";
-            ctx.lineWidth = 0.7 * dpr;
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
-          }
-        }
-        var mdx = p.x - mouse.x, mdy = p.y - mouse.y, md = Math.hypot(mdx, mdy);
-        var glow = 0;
-        if (md < 200 * dpr) glow = 1 - md / (200 * dpr);
+        var x1 = p.x * cY + p.z * sY;
+        var z1 = -p.x * sY + p.z * cY;
+        var y2 = p.y * cX - z1 * sX;
+        var z2 = p.y * sX + z1 * cX;
+        var depth = (z2 + 1) / 2;                 // 0 = back, 1 = front
+        var a = 0.13 + depth * depth * 0.8;
         ctx.beginPath();
-        ctx.fillStyle = glow > 0
-          ? "rgba(234,90,50," + (0.35 + glow * 0.55) + ")"
-          : "rgba(33,26,21,.28)";
-        ctx.arc(p.x, p.y, p.r + glow * 1.6 * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = (p.gold ? "rgba(232,163,61," : "rgba(16,156,151,") + a + ")";
+        ctx.arc(cx + x1 * R, cy + y2 * R, (0.5 + depth * 1.7) * dpr, 0, Math.PI * 2);
         ctx.fill();
       }
-      raf = requestAnimationFrame(draw);
+      if (running) raf = requestAnimationFrame(render);
     }
-    window.addEventListener("resize", size);
+
+    function start() { if (!running && !reduce) { running = true; raf = requestAnimationFrame(render); } }
+    function stop() { running = false; if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+    window.addEventListener("resize", function () { size(); if (reduce) render(); });
     window.addEventListener("mousemove", function (e) {
-      var r = c.getBoundingClientRect();
-      mouse.x = (e.clientX - r.left) * dpr;
-      mouse.y = (e.clientY - r.top) * dpr;
+      mx = (e.clientX / innerWidth - 0.5) * 2;
+      my = (e.clientY / innerHeight - 0.5) * 2;
     });
-    window.addEventListener("mouseleave", function () { mouse.x = -999; mouse.y = -999; });
-    size();
-    draw();
-    if (reduce) cancelAnimationFrame(raf); // static single frame
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+
+    build(); size();
+    if (reduce) { render(); return; }             // one static frame, no loop
+    var hero = c.closest(".hero");
+    if (hero && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (ents) {
+        ents.forEach(function (e) { if (e.isIntersecting) start(); else stop(); });
+      }, { threshold: 0 }).observe(hero);
+    } else {
+      start();
+    }
   })();
 
   /* ---------- Smooth scroll (Lenis) ---------- */
