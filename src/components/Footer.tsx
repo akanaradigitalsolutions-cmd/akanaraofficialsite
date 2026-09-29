@@ -59,7 +59,7 @@ export function Footer() {
           </div>
         </div>
 
-        <h2 className="text-display mt-20 w-full select-none text-[22vw] leading-[0.8] tracking-[-0.04em] text-ivory/90">
+        <h2 className="text-display mt-16 select-none text-4xl tracking-[0.3em] text-ivory/85 md:text-5xl">
           AKANARA
         </h2>
 

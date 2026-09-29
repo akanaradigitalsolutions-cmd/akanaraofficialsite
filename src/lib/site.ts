@@ -3,8 +3,8 @@ export const site = {
   legal: "CV Akanara Digital Solutions",
   tagline: "Digital craft for brands that deserve to be remembered.",
   email: "hello@akanara.com",
-  phone: "+62 812 0000 0000", // TODO: replace with real number
-  whatsapp: "https://wa.me/6281200000000", // TODO: replace with real WhatsApp
+  phone: "+62 857 3760 6345",
+  whatsapp: "https://wa.me/6285737606345",
   instagram: "https://instagram.com/akanara", // TODO: confirm handle
   linkedin: "https://linkedin.com/company/akanara", // TODO: confirm page
   address: "Bali, Indonesia",
