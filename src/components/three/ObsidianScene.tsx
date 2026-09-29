@@ -39,7 +39,7 @@ function Shard() {
 
   return (
     <mesh ref={mesh}>
-      <icosahedronGeometry args={[1.5, 24]} />
+      <icosahedronGeometry args={[1.5, 16]} />
       <MeshDistortMaterial
         color="#14100f"
         roughness={0.12}
@@ -55,7 +55,7 @@ function Shard() {
 export default function ObsidianScene() {
   return (
     <Canvas
-      dpr={[1, 1.5]}
+      dpr={[1, 1.25]}
       camera={{ position: [0, 0, 5], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -63,7 +63,7 @@ export default function ObsidianScene() {
       <directionalLight position={[4, 6, 5]} intensity={1.2} color="#f0b183" />
       <pointLight position={[-4, -2, -3]} intensity={12} color="#e07a3c" />
       <Shard />
-      <Environment resolution={256}>
+      <Environment resolution={128}>
         <Lightformer
           intensity={3}
           color="#ffb27a"

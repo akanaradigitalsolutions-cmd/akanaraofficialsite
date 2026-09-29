@@ -10,7 +10,9 @@ export function SmoothScroll() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    // Desktop only: smooth-scroll (a per-frame rAF loop) adds main-thread work
+    // and jank on mobile, where native scrolling is smoother and cheaper.
+    if (prefersReducedMotion() || !window.matchMedia("(min-width: 768px)").matches) return;
     let destroy = () => {};
     let cancelled = false;
 
