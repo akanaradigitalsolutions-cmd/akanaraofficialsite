@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { services } from "@/lib/site";
-import { prefersReducedMotion } from "@/lib/motion";
 
 /**
- * Pinned horizontal slider. The track translates by its overflow width while
- * the section stays pinned. Falls back to native horizontal scroll on touch
- * and with reduced motion.
+ * Services showcase.
+ * - Mobile: a simple vertical stack — every card is visible by scrolling down.
+ * - Desktop (>=768px, motion allowed): the section pins and the track slides
+ *   horizontally as you scroll. gsap.matchMedia sets this up/tears it down on
+ *   every breakpoint change, so no stale pin or leftover transform is left
+ *   behind when the viewport crosses 768px (which is what caused blank gaps).
  */
 export function ServicesScroll() {
   const section = useRef<HTMLElement>(null);
@@ -15,9 +17,8 @@ export function ServicesScroll() {
     const sec = section.current;
     const tr = track.current;
     if (!sec || !tr) return;
-    if (prefersReducedMotion() || window.matchMedia("(max-width: 767px)").matches) return;
 
-    let kill = () => {};
+    let cleanup = () => {};
     let cancelled = false;
 
     (async () => {
@@ -28,28 +29,33 @@ export function ServicesScroll() {
       if (cancelled) return;
       gsap.registerPlugin(ScrollTrigger);
 
-      const distance = () => tr.scrollWidth - window.innerWidth;
-      const tween = gsap.to(tr, {
-        x: () => -distance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: sec,
-          start: "top top",
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-        },
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const distance = () => tr.scrollWidth - window.innerWidth;
+        const tween = gsap.to(tr, {
+          x: () => -distance(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top top",
+            end: () => `+=${distance()}`,
+            pin: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        });
+        return () => {
+          tween.scrollTrigger?.kill();
+          tween.kill();
+        };
       });
-      kill = () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
+
+      cleanup = () => mm.revert();
     })();
 
     return () => {
       cancelled = true;
-      kill();
+      cleanup();
     };
   }, []);
 
@@ -60,12 +66,12 @@ export function ServicesScroll() {
       </div>
       <div
         ref={track}
-        className="flex gap-6 overflow-x-auto px-6 pb-6 md:overflow-visible md:px-12"
+        className="flex flex-col gap-6 px-6 pb-6 md:flex-row md:px-12"
       >
         {services.map((s) => (
           <article
             key={s.no}
-            className="grain group relative flex min-h-[26rem] w-[82vw] shrink-0 flex-col justify-between rounded-sm border border-border bg-card p-8 transition-colors duration-700 hover:border-ember/50 md:w-[34rem] md:p-12"
+            className="grain group relative flex min-h-[24rem] w-full shrink-0 flex-col justify-between rounded-sm border border-border bg-card p-8 transition-colors duration-700 hover:border-ember/50 md:min-h-[26rem] md:w-[34rem] md:p-12"
             data-cursor="Explore"
           >
             <div
