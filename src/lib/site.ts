@@ -14,10 +14,7 @@ export const site = {
 };
 
 // Canonical origin, used for SEO (canonical/OG URLs, sitemap, structured data).
-// TODO: change to "https://akanara.com" once the custom domain is connected to
-// this Cloudflare deployment (and update public/sitemap.xml + robots.txt).
-export const SITE_URL =
-  "https://akanaraofficialsite.akanaradigitalsolutions.workers.dev";
+export const SITE_URL = "https://akanara.com";
 
 // Web3Forms access key for the contact form (free tier: 250 enquiries / month).
 // Get one in ~30 seconds at https://web3forms.com — enter the inbox where you

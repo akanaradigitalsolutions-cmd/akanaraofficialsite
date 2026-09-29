@@ -20,4 +20,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://akanaraofficialsite.akanaradigitalsolutions.workers.dev/sitemap.xml
+Sitemap: https://akanara.com/sitemap.xml
