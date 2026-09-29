@@ -14,7 +14,7 @@ function Card({ p, index }: { p: (typeof projects)[number]; index: number }) {
   // the visitor's browser via WordPress mShots — no API key needed).
   const shot =
     p.image ??
-    `https://s0.wp.com/mshots/v1/${encodeURIComponent(p.url)}?w=1200&h=900`;
+    `https://s0.wp.com/mshots/v1/${encodeURIComponent(p.url)}?w=1280&h=800`;
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
@@ -39,7 +39,7 @@ function Card({ p, index }: { p: (typeof projects)[number]; index: number }) {
       >
         <div
           onMouseMove={onMove}
-          className="relative aspect-[4/3] overflow-hidden rounded-sm border border-border"
+          className="relative aspect-[16/10] overflow-hidden rounded-sm border border-border"
           style={{
             background: `linear-gradient(140deg, ${p.accentFrom}, ${p.accentTo})`,
           }}
