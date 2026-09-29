@@ -1,0 +1,198 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * AKANARA design system — "Volcanic Obsidian"
+ * Near-black volcanic stone, warm ember accent, ivory type.
+ * All colors in oklch. Never hardcode colors in components.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-stone-deep: var(--stone-deep);
+  --color-stone: var(--stone);
+  --color-ember: var(--ember);
+  --color-ember-soft: var(--ember-soft);
+  --color-ivory: var(--ivory);
+
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --background: oklch(0.145 0.004 60);
+  --foreground: oklch(0.936 0.012 75);
+  --card: oklch(0.187 0.008 55);
+  --card-foreground: oklch(0.936 0.012 75);
+  --popover: oklch(0.187 0.008 55);
+  --popover-foreground: oklch(0.936 0.012 75);
+  --primary: oklch(0.672 0.116 45);
+  --primary-foreground: oklch(0.145 0.004 60);
+  --secondary: oklch(0.232 0.01 55);
+  --secondary-foreground: oklch(0.936 0.012 75);
+  --muted: oklch(0.232 0.01 55);
+  --muted-foreground: oklch(0.66 0.012 70);
+  --accent: oklch(0.672 0.116 45);
+  --accent-foreground: oklch(0.145 0.004 60);
+  --destructive: oklch(0.577 0.208 25);
+  --destructive-foreground: oklch(0.96 0.01 75);
+  --border: oklch(0.936 0.012 75 / 12%);
+  --input: oklch(0.936 0.012 75 / 16%);
+  --ring: oklch(0.672 0.116 45 / 45%);
+
+  --stone-deep: oklch(0.12 0.004 60);
+  --stone: oklch(0.21 0.009 55);
+  --ember: oklch(0.672 0.116 45);
+  --ember-soft: oklch(0.78 0.076 58);
+  --ivory: oklch(0.936 0.012 75);
+
+  --gradient-ember: linear-gradient(135deg, var(--ember), var(--ember-soft));
+  --gradient-vault: radial-gradient(
+    120% 90% at 50% 0%,
+    oklch(0.24 0.02 45 / 60%),
+    transparent 70%
+  );
+  --shadow-ember: 0 30px 80px -40px oklch(0.672 0.116 45 / 45%);
+  --ease-lux: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--ember);
+    color: var(--stone-deep);
+  }
+}
+
+/* Utilities ---------------------------------------------------------- */
+
+@utility text-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility vault-glow {
+  background-image: var(--gradient-vault);
+}
+
+@utility ember-text {
+  background-image: var(--gradient-ember);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility hairline-t {
+  border-top: 1px solid var(--border);
+}
+
+@utility grain {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+}
+
+@utility reveal-mask {
+  overflow: hidden;
+  display: block;
+}
+
+/* Reveal primitives driven by IntersectionObserver ------------------- */
+
+@utility rise {
+  opacity: 0;
+  transform: translateY(24px);
+  filter: blur(6px);
+  transition:
+    opacity 1s var(--ease-lux),
+    transform 1s var(--ease-lux),
+    filter 1s var(--ease-lux);
+  &[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
