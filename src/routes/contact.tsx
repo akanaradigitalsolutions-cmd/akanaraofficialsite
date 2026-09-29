@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { SiteShell } from "@/components/SiteShell";
 import { site, services } from "@/lib/site";
 
@@ -24,8 +24,57 @@ export const Route = createFileRoute("/contact")({
 const field =
   "w-full border-b border-border bg-transparent py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-ember";
 
+// Turns the form fields into a single, readable enquiry message that we send
+// either to WhatsApp or to email. Empty optional fields are skipped.
+function buildEnquiry(data: FormData) {
+  const get = (k: string) => ((data.get(k) as string) ?? "").trim();
+  const lines: string[] = ["New enquiry via akanara.com", ""];
+
+  lines.push(`Name: ${get("name")}`);
+  const company = get("company");
+  if (company) lines.push(`Company / property: ${company}`);
+  lines.push(`Email: ${get("email")}`);
+
+  const budget = get("budget");
+  if (budget) lines.push(`Budget: ${budget}`);
+  const service = get("service");
+  if (service) lines.push(`Service: ${service}`);
+  const timeline = get("timeline");
+  if (timeline) lines.push(`Timeline: ${timeline}`);
+
+  const message = get("message");
+  if (message) lines.push("", message);
+
+  return { name: get("name"), body: lines.join("\n") };
+}
+
 function ContactPage() {
-  const [sent, setSent] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [sent, setSent] = useState<null | "whatsapp" | "email">(null);
+
+  // Primary: open WhatsApp (a new tab) with the enquiry pre-filled.
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { body } = buildEnquiry(new FormData(e.currentTarget));
+    window.open(
+      `${site.whatsapp}?text=${encodeURIComponent(body)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+    setSent("whatsapp");
+  };
+
+  // Secondary: open the visitor's mail app with the same details pre-filled.
+  const handleEmail = () => {
+    const form = formRef.current;
+    if (!form || !form.reportValidity()) return; // run native required/email checks
+    const { name, body } = buildEnquiry(new FormData(form));
+    const subject = `New enquiry${name ? ` from ${name}` : ""}`;
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+    setSent("email");
+  };
 
   return (
     <SiteShell>
@@ -48,18 +97,30 @@ function ContactPage() {
           </div>
         </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSent(true);
-          }}
-          className="flex flex-col gap-6"
-        >
+        <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2">
-            <input required name="name" placeholder="Name" className={field} />
-            <input name="company" placeholder="Company / property" className={field} />
+            <input
+              required
+              name="name"
+              autoComplete="name"
+              placeholder="Name"
+              className={field}
+            />
+            <input
+              name="company"
+              autoComplete="organization"
+              placeholder="Company / property"
+              className={field}
+            />
           </div>
-          <input required type="email" name="email" placeholder="Email" className={field} />
+          <input
+            required
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="Email"
+            className={field}
+          />
           <div className="grid gap-6 sm:grid-cols-2">
             <select name="budget" className={field} defaultValue="">
               <option value="" disabled>
@@ -101,25 +162,36 @@ function ContactPage() {
               data-cursor="Send"
               className="rounded-full bg-ember px-8 py-4 label-mono text-primary-foreground transition-colors hover:bg-ember-soft"
             >
-              Send enquiry
+              Send via WhatsApp
             </button>
-            <a
-              href={site.whatsapp}
-              data-cursor="Chat"
+            <button
+              type="button"
+              onClick={handleEmail}
+              data-cursor="Email"
               className="rounded-full border border-border px-8 py-4 label-mono transition-colors hover:border-ember hover:text-ember"
             >
-              WhatsApp instead
-            </a>
-            {sent && (
-              <p className="label-mono text-ember">
-                Thank you — we'll reply within one working day.
-              </p>
-            )}
+              Email instead
+            </button>
           </div>
-          <p className="text-xs text-muted-foreground">
-            This form is a front-end demo — messages are not delivered yet. Connect a backend
-            to receive enquiries by email.
-          </p>
+
+          {sent === "whatsapp" && (
+            <p className="label-mono text-ember">
+              WhatsApp is opening in a new tab with your details — just hit send and we'll
+              reply within one working day.
+            </p>
+          )}
+          {sent === "email" && (
+            <p className="label-mono text-ember">
+              Your email app is opening with the details filled in — hit send and we'll be in
+              touch within one working day.
+            </p>
+          )}
+          {!sent && (
+            <p className="text-xs text-muted-foreground">
+              Your details are packaged into a message you send from WhatsApp or your own email
+              app — nothing is stored on this site.
+            </p>
+          )}
         </form>
       </section>
     </SiteShell>
