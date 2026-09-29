@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, MeshDistortMaterial } from "@react-three/drei";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 /**
@@ -53,8 +53,25 @@ function Shard() {
 }
 
 export default function ObsidianScene() {
+  // Pause the render loop when the hero scrolls out of view — no point burning
+  // CPU/GPU (and battery) rendering frames nobody can see, and it lets the page
+  // reach idle faster.
+  const wrap = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(true);
+  useEffect(() => {
+    const el = wrap.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), {
+      threshold: 0,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
+    <div ref={wrap} className="h-full w-full">
     <Canvas
+      frameloop={active ? "always" : "never"}
       dpr={[1, 1.25]}
       camera={{ position: [0, 0, 5], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
@@ -86,5 +103,6 @@ export default function ObsidianScene() {
         />
       </Environment>
     </Canvas>
+    </div>
   );
 }
