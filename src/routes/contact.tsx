@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type FormEvent } from "react";
 import { SiteShell } from "@/components/SiteShell";
-import { site, services } from "@/lib/site";
+import { site, services, web3formsAccessKey } from "@/lib/site";
 
 const title = "Contact — AKANARA";
 const description =
@@ -24,8 +24,8 @@ export const Route = createFileRoute("/contact")({
 const field =
   "w-full border-b border-border bg-transparent py-4 text-base outline-none transition-colors placeholder:text-muted-foreground focus:border-ember";
 
-// Turns the form fields into a single, readable enquiry message that we send
-// either to WhatsApp or to email. Empty optional fields are skipped.
+// Turns the form fields into a single, readable enquiry — used for the WhatsApp
+// hand-off (and the fallback when no email key is configured yet).
 function buildEnquiry(data: FormData) {
   const get = (k: string) => ((data.get(k) as string) ?? "").trim();
   const lines: string[] = ["New enquiry via akanara.com", ""];
@@ -48,33 +48,73 @@ function buildEnquiry(data: FormData) {
   return { name: get("name"), body: lines.join("\n") };
 }
 
+type Status = "idle" | "sending" | "success" | "error";
+
 function ContactPage() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [sent, setSent] = useState<null | "whatsapp" | "email">(null);
+  const [status, setStatus] = useState<Status>("idle");
+  const [note, setNote] = useState("");
 
-  // Primary: open WhatsApp (a new tab) with the enquiry pre-filled.
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { body } = buildEnquiry(new FormData(e.currentTarget));
+  const openWhatsApp = (data: FormData) => {
+    const { body } = buildEnquiry(data);
     window.open(
       `${site.whatsapp}?text=${encodeURIComponent(body)}`,
       "_blank",
       "noopener,noreferrer",
     );
-    setSent("whatsapp");
   };
 
-  // Secondary: open the visitor's mail app with the same details pre-filled.
-  const handleEmail = () => {
-    const form = formRef.current;
-    if (!form || !form.reportValidity()) return; // run native required/email checks
-    const { name, body } = buildEnquiry(new FormData(form));
-    const subject = `New enquiry${name ? ` from ${name}` : ""}`;
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
-    setSent("email");
+  // Primary: deliver the enquiry to our inbox via Web3Forms. If no key is
+  // configured yet, hand off to WhatsApp so the form is never a dead end.
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    if (!web3formsAccessKey) {
+      openWhatsApp(data);
+      setStatus("success");
+      setNote("WhatsApp is opening with your details — just hit send and we'll reply within one working day.");
+      return;
+    }
+
+    setStatus("sending");
+    setNote("");
+
+    const name = (data.get("name") as string) || "the website";
+    data.append("access_key", web3formsAccessKey);
+    data.append("subject", `New enquiry from ${name} — akanara.com`);
+    data.append("from_name", "AKANARA website");
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+      const json = (await res.json()) as { success?: boolean; message?: string };
+      if (json.success) {
+        setStatus("success");
+        setNote("Thank you — your enquiry is on its way. We'll reply within one working day.");
+        form.reset();
+      } else {
+        setStatus("error");
+        setNote(json.message || "Something went wrong. Please try WhatsApp or email us directly.");
+      }
+    } catch {
+      setStatus("error");
+      setNote("Network hiccup — please try WhatsApp below, or email us directly.");
+    }
   };
+
+  // Secondary: quick WhatsApp hand-off, pre-filled with whatever's entered.
+  const handleWhatsApp = () => {
+    const form = formRef.current;
+    if (!form) return;
+    openWhatsApp(new FormData(form));
+  };
+
+  const sending = status === "sending";
 
   return (
     <SiteShell>
@@ -156,40 +196,48 @@ function ContactPage() {
             className={`${field} resize-none`}
           />
 
+          {/* Honeypot — hidden from people, catches bots (Web3Forms). */}
+          <input
+            type="checkbox"
+            name="botcheck"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden"
+            style={{ display: "none" }}
+          />
+
           <div className="flex flex-wrap items-center gap-4 pt-4">
             <button
               type="submit"
+              disabled={sending}
               data-cursor="Send"
-              className="rounded-full bg-ember px-8 py-4 label-mono text-primary-foreground transition-colors hover:bg-ember-soft"
+              className="rounded-full bg-ember px-8 py-4 label-mono text-primary-foreground transition-colors hover:bg-ember-soft disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Send via WhatsApp
+              {sending ? "Sending…" : "Send enquiry"}
             </button>
             <button
               type="button"
-              onClick={handleEmail}
-              data-cursor="Email"
+              onClick={handleWhatsApp}
+              data-cursor="Chat"
               className="rounded-full border border-border px-8 py-4 label-mono transition-colors hover:border-ember hover:text-ember"
             >
-              Email instead
+              WhatsApp instead
             </button>
           </div>
 
-          {sent === "whatsapp" && (
-            <p className="label-mono text-ember">
-              WhatsApp is opening in a new tab with your details — just hit send and we'll
-              reply within one working day.
+          {note && (
+            <p
+              className={`label-mono ${status === "error" ? "text-red-400" : "text-ember"}`}
+              role="status"
+              aria-live="polite"
+            >
+              {note}
             </p>
           )}
-          {sent === "email" && (
-            <p className="label-mono text-ember">
-              Your email app is opening with the details filled in — hit send and we'll be in
-              touch within one working day.
-            </p>
-          )}
-          {!sent && (
+          {status === "idle" && (
             <p className="text-xs text-muted-foreground">
-              Your details are packaged into a message you send from WhatsApp or your own email
-              app — nothing is stored on this site.
+              We reply within one working day. Prefer to chat? Use WhatsApp.
             </p>
           )}
         </form>

@@ -10,6 +10,14 @@ export const site = {
   address: "Bali, Indonesia",
 };
 
+// Web3Forms access key for the contact form (free tier: 250 enquiries / month).
+// Get one in ~30 seconds at https://web3forms.com — enter the inbox where you
+// want enquiries delivered (e.g. akanaradigitalsolutions@gmail.com) and paste
+// the access key they email you here. It is a PUBLIC token, safe to ship in
+// client-side code; enquiries are delivered only to that registered inbox.
+// While this is empty, the form gracefully falls back to WhatsApp.
+export const web3formsAccessKey = ""; // TODO: paste your Web3Forms access key
+
 // Capability marquee (not client names — swap for real client logos/names when ready).
 export const clients = [
   "WEB DESIGN",
