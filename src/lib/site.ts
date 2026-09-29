@@ -85,10 +85,11 @@ export const projects: Project[] = [
   },
   {
     slug: "natajiwa",
-    name: "Nata Jiwa",
-    category: "Website",
+    name: "Natajiwa Village",
+    category: "Website · Hospitality",
     url: "https://natajiwa.com",
-    summary: "Website design and development for Nata Jiwa.",
+    summary:
+      "A boutique stay in Kerobokan — rooms, restaurant and slow living, moments from Canggu and Seminyak.",
     accentFrom: "oklch(0.66 0.10 60)",
     accentTo: "oklch(0.30 0.03 55)",
   },
@@ -114,9 +115,9 @@ export const projects: Project[] = [
   {
     slug: "rarama-living",
     name: "Rarama Living Studio",
-    category: "Website",
+    category: "Website · Hospitality",
     url: "https://raramalivingstudio.com",
-    summary: "Website design and development for Rarama Living Studio.",
+    summary: "A hotel & stay website for Rarama Living Studio, Bali.",
     accentFrom: "oklch(0.74 0.09 55)",
     accentTo: "oklch(0.30 0.02 50)",
   },
