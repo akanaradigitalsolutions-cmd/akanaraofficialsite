@@ -24,10 +24,11 @@ function Card({ p, index }: { p: (typeof projects)[number]; index: number }) {
       className="rise"
       style={{ transitionDelay: `${(index % 2) * 0.12}s` }}
     >
-      <Link
-        to="/work/$slug"
-        params={{ slug: p.slug }}
-        data-cursor="View"
+      <a
+        href={p.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-cursor="Visit"
         className="group block"
       >
         <div
@@ -53,10 +54,10 @@ function Card({ p, index }: { p: (typeof projects)[number]; index: number }) {
           <h3 className="text-display text-2xl transition-colors group-hover:text-ember">
             {p.name}
           </h3>
-          <span className="label-mono">{p.year}</span>
+          <span className="label-mono">Visit ↗</span>
         </div>
         <p className="label-mono">{p.category}</p>
-      </Link>
+      </a>
     </div>
   );
 }
@@ -72,7 +73,7 @@ export function Work() {
           </h2>
         </div>
         <Link to="/work" data-cursor="All" className="label-mono hover:text-ember">
-          All case studies →
+          All work →
         </Link>
       </div>
 

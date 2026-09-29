@@ -55,28 +55,46 @@ function CaseStudy() {
             {p.summary}
           </p>
 
-          <div className="mt-24 grid gap-14 md:grid-cols-2">
-            <div>
-              <p className="label-mono">Challenge</p>
-              <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                {p.challenge}
-              </p>
-            </div>
-            <div>
-              <p className="label-mono">Solution</p>
-              <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                {p.solution}
-              </p>
-            </div>
-          </div>
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor="Visit"
+            className="label-mono mt-8 inline-block hover:text-ember"
+          >
+            Visit live site ↗
+          </a>
 
-          <div className="mt-24 grid gap-8 md:grid-cols-3">
-            {p.results.map((r) => (
-              <div key={r} className="hairline-t pt-6">
-                <p className="text-display text-3xl md:text-4xl">{r}</p>
-              </div>
-            ))}
-          </div>
+          {(p.challenge || p.solution) && (
+            <div className="mt-24 grid gap-14 md:grid-cols-2">
+              {p.challenge && (
+                <div>
+                  <p className="label-mono">Challenge</p>
+                  <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+                    {p.challenge}
+                  </p>
+                </div>
+              )}
+              {p.solution && (
+                <div>
+                  <p className="label-mono">Solution</p>
+                  <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+                    {p.solution}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {p.results && p.results.length > 0 && (
+            <div className="mt-24 grid gap-8 md:grid-cols-3">
+              {p.results.map((r) => (
+                <div key={r} className="hairline-t pt-6">
+                  <p className="text-display text-3xl md:text-4xl">{r}</p>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="mt-24 grid gap-6 md:grid-cols-3">
             {[0, 1, 2].map((i) => (

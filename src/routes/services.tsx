@@ -6,7 +6,7 @@ import { useReveal } from "@/lib/motion";
 
 const title = "Services — AKANARA";
 const description =
-  "Web design and development, booking engines and SaaS, hospitality marketing, branding, SEO and paid media.";
+  "Web design & development, web apps & software, performance marketing, branding, and SEO · SEM · GEO.";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -52,8 +52,8 @@ function ServicesPage() {
     <SiteShell>
       <section className="mx-auto max-w-[110rem] px-6 pb-24 pt-40 md:px-12 md:pt-56">
         <p className="label-mono">Services</p>
-        <h1 className="text-display mt-6 max-w-[16ch] text-6xl md:text-8xl">
-          Everything a property needs online. Nothing it doesn't.
+        <h1 className="text-display mt-6 max-w-[16ch] text-5xl md:text-7xl">
+          Everything your brand needs online. Nothing it doesn't.
         </h1>
 
         <div className="mt-20">

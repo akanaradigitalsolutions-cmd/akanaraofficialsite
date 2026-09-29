@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 
 const title = "About — AKANARA";
 const description =
-  "A Bali studio of designers, engineers and operators building digital work for hospitality, wellness and lifestyle brands.";
+  "A founder-led Bali digital studio building websites, web apps and growth for brands that want to stand out.";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -29,11 +29,10 @@ const values = [
   { t: "Calm", c: "Clear scope, clear timelines, no theatre." },
 ];
 
+// TODO: add real team/founder names here when ready.
 const team = [
-  { n: "Putu Eka", r: "Founder & Creative Director" },
-  { n: "Lena Hartono", r: "Design Lead" },
-  { n: "Rizky Pratama", r: "Engineering Lead" },
-  { n: "Sarah Klein", r: "Strategy & Growth" },
+  { n: "Founder-led", r: "Every project run by a senior pair — no juniors, no handoffs." },
+  { n: "Design + Engineering", r: "One team, from art direction to production code." },
 ];
 
 function AboutPage() {
@@ -46,14 +45,14 @@ function AboutPage() {
         </h1>
         <div className="mt-16 grid gap-12 md:grid-cols-2">
           <p className="text-display text-3xl leading-[1.15] md:text-4xl">
-            {site.legal} was founded in Bali to give hospitality brands the same standard of
-            digital craft that luxury fashion and technology take for granted.
+            {site.legal} is a founder-led digital studio in Bali. We give growing brands the
+            same standard of digital craft that big tech and luxury names take for granted.
           </p>
           <div className="flex flex-col gap-6 text-sm leading-relaxed text-muted-foreground">
             <p>
-              We work with resorts, spas, villa portfolios and wellness operators across
-              Southeast Asia and beyond. Our team sits between design and operations — we
-              understand occupancy, rate parity and channel mix as fluently as grid systems.
+              We work with brands and businesses across Bali and beyond — from booking
+              platforms to tour operators to lifestyle brands. We sit between design and
+              engineering, and we care about your numbers as much as your grid system.
             </p>
             <p>
               The studio stays deliberately small. Every project is led by a senior pair, and

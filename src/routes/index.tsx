@@ -5,15 +5,13 @@ import { Marquee } from "@/components/sections/Marquee";
 import { Manifesto } from "@/components/sections/Manifesto";
 import { ServicesScroll } from "@/components/sections/ServicesScroll";
 import { Work } from "@/components/sections/Work";
-import { Products } from "@/components/sections/Products";
 import { Process } from "@/components/sections/Process";
 import { Numbers } from "@/components/sections/Numbers";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { CTA } from "@/components/sections/CTA";
 
-const title = "AKANARA — Digital studio for hospitality & lifestyle brands";
+const title = "AKANARA — Digital studio in Bali · Websites, apps & growth";
 const description =
-  "Bali-based digital studio crafting websites, booking engines and SaaS products for hospitality, wellness and lifestyle brands.";
+  "Akanara is a founder-led Bali digital studio building websites, web apps and growth for brands that want to stand out.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,10 +35,8 @@ function Index() {
       <Manifesto />
       <ServicesScroll />
       <Work />
-      <Products />
       <Process />
       <Numbers />
-      <Testimonials />
       <CTA />
     </SiteShell>
   );

@@ -65,7 +65,7 @@ export function Footer() {
 
         <div className="hairline-t mt-8 flex flex-col gap-2 py-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="label-mono">© {new Date().getFullYear()} {site.legal}</p>
-          <p className="label-mono">Bali · Singapore · Worldwide</p>
+          <p className="label-mono">Made in Bali · Working worldwide</p>
         </div>
       </div>
     </footer>

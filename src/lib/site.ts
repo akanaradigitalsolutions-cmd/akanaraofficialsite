@@ -3,11 +3,11 @@ export const site = {
   legal: "CV Akanara Digital Solutions",
   tagline: "Digital craft for brands that deserve to be remembered.",
   email: "hello@akanara.com",
-  phone: "+62 812 0000 0000",
-  whatsapp: "https://wa.me/6281200000000",
-  instagram: "https://instagram.com/akanara",
-  linkedin: "https://linkedin.com/company/akanara",
-  address: "Jl. Raya Pererenan, Canggu — Bali, Indonesia",
+  phone: "+62 812 0000 0000", // TODO: replace with real number
+  whatsapp: "https://wa.me/6281200000000", // TODO: replace with real WhatsApp
+  instagram: "https://instagram.com/akanara", // TODO: confirm handle
+  linkedin: "https://linkedin.com/company/akanara", // TODO: confirm page
+  address: "Bali, Indonesia",
 };
 
 // Capability marquee (not client names — swap for real client logos/names when ready).
@@ -27,7 +27,7 @@ export const services = [
     no: "01",
     title: "Web Design & Development",
     copy: "Editorial, motion-led websites engineered for speed. Every pixel considered, every millisecond measured.",
-    points: ["Art direction", "Next-gen front-end", "CMS & editorial tooling"],
+    points: ["Art direction", "Modern front-end", "CMS & content tooling"],
   },
   {
     no: "02",
@@ -59,107 +59,85 @@ export type Project = {
   slug: string;
   name: string;
   category: string;
-  year: string;
+  url: string; // live site — cards link out to this
   summary: string;
-  challenge: string;
-  solution: string;
-  results: string[];
+  year?: string;
+  challenge?: string;
+  solution?: string;
+  results?: string[];
   accentFrom: string;
   accentTo: string;
 };
 
+// Real Akanara projects. Cards link straight to the live sites.
+// TODO: confirm/refine each summary + category (and add year/results if you want
+// full case-study pages later).
 export const projects: Project[] = [
   {
     slug: "relaxha",
     name: "Relaxha",
-    category: "In-house SaaS · Spa booking engine",
-    year: "2026",
+    category: "Web app · Wellness booking",
+    url: "https://relaxha.com",
     summary:
-      "A wellness marketplace and booking engine connecting spas across Bali with guests who book in under sixty seconds.",
-    challenge:
-      "Independent spas were losing bookings to phone tag and marketplace commissions, with no shared inventory layer.",
-    solution:
-      "We built a multi-tenant booking engine with real-time therapist availability, deposits, and a consumer marketplace on top.",
-    results: ["61% faster booking flow", "3.4x direct reservations", "120+ partner venues"],
-    accentFrom: "oklch(0.672 0.116 45)",
-    accentTo: "oklch(0.42 0.06 30)",
+      "A spa & wellness booking platform connecting venues with guests across Bali.",
+    accentFrom: "oklch(0.70 0.11 45)",
+    accentTo: "oklch(0.34 0.05 35)",
   },
   {
-    slug: "amankira-retreat",
-    name: "Amankira Retreat",
-    category: "Website · Direct booking",
-    year: "2025",
-    summary:
-      "A cliffside resort relaunch built around a single idea: arrival should begin on the homepage.",
-    challenge:
-      "A beautiful property represented by a slow, template site that sent 80% of bookings through OTAs.",
-    solution:
-      "Cinematic art direction, a rebuilt rate engine, and a booking flow tuned for mobile guests in transit.",
-    results: ["+48% direct revenue", "1.2s LCP on mobile", "-31% OTA dependency"],
-    accentFrom: "oklch(0.78 0.076 58)",
-    accentTo: "oklch(0.35 0.03 60)",
+    slug: "natajiwa",
+    name: "Nata Jiwa",
+    category: "Website",
+    url: "https://natajiwa.com",
+    summary: "Website design and development for Nata Jiwa.",
+    accentFrom: "oklch(0.66 0.10 60)",
+    accentTo: "oklch(0.30 0.03 55)",
   },
   {
-    slug: "soori-villas",
-    name: "Soori Villas",
-    category: "Branding · Website",
-    year: "2025",
+    slug: "kintamani-dirtbike",
+    name: "Kintamani Dirt Bike Adventure",
+    category: "Website · Tours & activities",
+    url: "https://kintamanidirtbikeadventure.com",
     summary:
-      "An identity system built from volcanic sand, black stone and a single warm light.",
-    challenge: "Three sub-brands with no shared visual grammar and inconsistent guest expectation.",
-    solution:
-      "One typographic system, one photography direction, one modular site architecture across properties.",
-    results: ["3 properties unified", "+27% enquiry rate", "Full brand toolkit"],
-    accentFrom: "oklch(0.62 0.09 40)",
-    accentTo: "oklch(0.3 0.02 50)",
+      "A website for a Kintamani dirt-bike adventure tour operator.",
+    accentFrom: "oklch(0.72 0.12 40)",
+    accentTo: "oklch(0.32 0.04 30)",
   },
   {
-    slug: "desa-seni",
-    name: "Desa Seni",
-    category: "Platform · Retreat operations",
-    year: "2024",
-    summary:
-      "A retreat operations platform: programmes, cohorts, payments and guest comms in one place.",
-    challenge: "Retreat programming ran on spreadsheets; every cohort meant manual reconciliation.",
-    solution: "A scheduling and payments platform with guest portals and automated pre-arrival flows.",
-    results: ["14h/week saved", "Zero double-bookings", "98% guest portal adoption"],
-    accentFrom: "oklch(0.7 0.1 55)",
-    accentTo: "oklch(0.33 0.04 40)",
+    slug: "maguska-tour",
+    name: "Maguska Tour",
+    category: "Website · Travel & tours",
+    url: "https://maguskatour.com",
+    summary: "A website for a Bali tour operator.",
+    accentFrom: "oklch(0.68 0.10 30)",
+    accentTo: "oklch(0.31 0.03 45)",
   },
   {
-    slug: "uluwatu-cliff",
-    name: "Uluwatu Cliff Club",
-    category: "Website · Events",
-    year: "2024",
-    summary: "A beach club presence with live event programming and table reservations.",
-    challenge: "Event listings lived on social; reservations lived in DMs.",
-    solution: "A programmable events system with table inventory, deposits and guest lists.",
-    results: ["+64% table bookings", "2x event page traffic", "Sold-out weekends"],
-    accentFrom: "oklch(0.74 0.09 50)",
-    accentTo: "oklch(0.28 0.02 55)",
+    slug: "rarama-living",
+    name: "Rarama Living Studio",
+    category: "Website",
+    url: "https://raramalivingstudio.com",
+    summary: "Website design and development for Rarama Living Studio.",
+    accentFrom: "oklch(0.74 0.09 55)",
+    accentTo: "oklch(0.30 0.02 50)",
+  },
+  {
+    slug: "akalink",
+    name: "Akalink",
+    category: "Web app",
+    url: "https://akalink.id",
+    summary: "A custom web application.",
+    accentFrom: "oklch(0.64 0.12 35)",
+    accentTo: "oklch(0.28 0.03 40)",
   },
 ];
 
-export const products = [
-  {
-    name: "Relaxha",
-    kind: "Spa booking engine & wellness marketplace",
-    copy: "Real-time therapist availability, deposits, and a consumer marketplace — built for Bali, shipping regionally.",
-    status: "Live",
-  },
-  {
-    name: "Stayledger",
-    kind: "Villa revenue & channel dashboard",
-    copy: "One view of direct, OTA and agent revenue across a villa portfolio, with nightly reconciliation.",
-    status: "Beta",
-  },
-  {
-    name: "Concierge OS",
-    kind: "Guest messaging & upsell",
-    copy: "Pre-arrival journeys, in-stay requests and upsell offers, routed to the right team in seconds.",
-    status: "In development",
-  },
-];
+// Removed placeholder "in-house products" — add real ones here if wanted.
+export const products: {
+  name: string;
+  kind: string;
+  copy: string;
+  status: string;
+}[] = [];
 
 export const processSteps = [
   { no: "01", title: "Discover", copy: "Immersion in your brand, your market and the numbers behind them." },
@@ -178,23 +156,5 @@ export const stats = [
   { value: 24, suffix: "/7", label: "Founder-led support" },
 ];
 
-export const testimonials = [
-  {
-    quote:
-      "They understood our property better than agencies we had worked with for years. The site feels like walking through the resort.",
-    name: "Maya Wirawan",
-    role: "General Manager, Amankira Retreat",
-  },
-  {
-    quote:
-      "Direct bookings nearly doubled in one season. Calm people, precise work, no drama.",
-    name: "Daniel Roth",
-    role: "Owner, Soori Villas",
-  },
-  {
-    quote:
-      "The booking platform runs itself now. That is the highest compliment I can give software.",
-    name: "Putu Arsana",
-    role: "Founder, Relaxha",
-  },
-];
+// Removed fabricated testimonials — add real client quotes here when you have them.
+export const testimonials: { quote: string; name: string; role: string }[] = [];
