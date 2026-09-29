@@ -16,7 +16,7 @@ export const site = {
 // the access key they email you here. It is a PUBLIC token, safe to ship in
 // client-side code; enquiries are delivered only to that registered inbox.
 // While this is empty, the form gracefully falls back to WhatsApp.
-export const web3formsAccessKey = ""; // TODO: paste your Web3Forms access key
+export const web3formsAccessKey = "a4011080-662a-4ca0-a37a-46572d4008d0";
 
 // Capability marquee (not client names — swap for real client logos/names when ready).
 export const clients = [
