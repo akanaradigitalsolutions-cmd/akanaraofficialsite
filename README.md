@@ -27,3 +27,7 @@ npm run dev
 - TypeScript
 - React
 - Tailwind CSS
+
+## Deployment
+
+Deployed on Cloudflare Workers from the `rebuild` branch (config in `wrangler.jsonc`).
