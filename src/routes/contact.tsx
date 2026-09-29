@@ -2,22 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState, type FormEvent } from "react";
 import { SiteShell } from "@/components/SiteShell";
 import { site, services, web3formsAccessKey } from "@/lib/site";
+import { seo } from "@/lib/seo";
 
 const title = "Contact — AKANARA";
 const description =
-  "Tell us about your property or product. Project enquiries, budgets and timelines — we reply within one working day.";
+  "Tell us about your project. Enquiries, budgets and timelines — we reply within one working day.";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => seo({ title, description, path: "/contact" }),
   component: ContactPage,
 });
 

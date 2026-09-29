@@ -3,22 +3,14 @@ import { useMemo, useState } from "react";
 import { SiteShell } from "@/components/SiteShell";
 import { projects } from "@/lib/site";
 import { useReveal } from "@/lib/motion";
+import { seo } from "@/lib/seo";
 
 const title = "Work — AKANARA";
 const description =
   "Selected work by Akanara — websites and web apps for brands in Bali and beyond.";
 
 export const Route = createFileRoute("/work/")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => seo({ title, description, path: "/work" }),
   component: WorkIndex,
 });
 

@@ -8,22 +8,14 @@ import { Work } from "@/components/sections/Work";
 import { Process } from "@/components/sections/Process";
 import { Numbers } from "@/components/sections/Numbers";
 import { CTA } from "@/components/sections/CTA";
+import { seo } from "@/lib/seo";
 
 const title = "AKANARA — Digital studio in Bali · Websites, apps & growth";
 const description =
   "Akanara is a founder-led Bali digital studio building websites, web apps and growth for brands that want to stand out.";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => seo({ title, description, path: "/" }),
   component: Index,
 });
 

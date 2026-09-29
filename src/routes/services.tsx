@@ -3,22 +3,14 @@ import { SiteShell } from "@/components/SiteShell";
 import { Magnetic } from "@/components/ui/magnetic";
 import { services, processSteps } from "@/lib/site";
 import { useReveal } from "@/lib/motion";
+import { seo } from "@/lib/seo";
 
 const title = "Services — AKANARA";
 const description =
   "Web design & development, web apps & software, performance marketing, branding, and SEO · SEM · GEO.";
 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => seo({ title, description, path: "/services" }),
   component: ServicesPage,
 });
 

@@ -2,13 +2,22 @@ export const site = {
   name: "AKANARA",
   legal: "CV Akanara Digital Solutions",
   tagline: "Digital craft for brands that deserve to be remembered.",
+  description:
+    "Akanara is a founder-led digital studio in Bali building websites, web apps and growth for brands that want to stand out — design, engineering, SEO and performance marketing.",
   email: "hello@akanara.com",
   phone: "+62 857 3760 6345",
   whatsapp: "https://wa.me/6285737606345",
-  instagram: "https://instagram.com/akanara", // TODO: confirm handle
-  linkedin: "https://linkedin.com/company/akanara", // TODO: confirm page
+  // Social links are hidden until confirmed — set a full URL to show the link.
+  instagram: "",
+  linkedin: "",
   address: "Bali, Indonesia",
 };
+
+// Canonical origin, used for SEO (canonical/OG URLs, sitemap, structured data).
+// TODO: change to "https://akanara.com" once the custom domain is connected to
+// this Cloudflare deployment (and update public/sitemap.xml + robots.txt).
+export const SITE_URL =
+  "https://akanaraofficialsite.akanaradigitalsolutions.workers.dev";
 
 // Web3Forms access key for the contact form (free tier: 250 enquiries / month).
 // Get one in ~30 seconds at https://web3forms.com — enter the inbox where you

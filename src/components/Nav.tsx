@@ -76,7 +76,7 @@ export function Nav() {
             data-cursor={open ? "Close" : "Menu"}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="flex flex-col gap-[6px] p-2"
+            className="flex flex-col gap-[6px] p-2 md:hidden"
           >
             <span
               className={`block h-px w-7 bg-ivory transition-transform duration-500 ${open ? "translate-y-[3.5px] rotate-45" : ""}`}
@@ -102,14 +102,14 @@ export function Nav() {
               key={l.to}
               to={l.to}
               data-cursor="Open"
-              className="group hairline-t flex items-baseline justify-between py-5"
+              className="group hairline-t flex items-baseline justify-between py-4"
               style={{
                 opacity: open ? 1 : 0,
                 transform: open ? "translateY(0)" : "translateY(40px)",
                 transition: `all 0.9s var(--ease-lux) ${open ? 0.15 + i * 0.07 : 0}s`,
               }}
             >
-              <span className="text-display text-5xl text-ivory transition-colors group-hover:text-ember sm:text-7xl md:text-8xl">
+              <span className="text-display text-4xl text-ivory transition-colors group-hover:text-ember sm:text-5xl">
                 {l.label}
               </span>
               <span className="label-mono">0{i + 1}</span>
@@ -119,15 +119,19 @@ export function Nav() {
             <a href={`mailto:${site.email}`} className="label-mono hover:text-ember">
               {site.email}
             </a>
-            <a href={site.instagram} className="label-mono hover:text-ember">
-              Instagram
-            </a>
-            <a href={site.linkedin} className="label-mono hover:text-ember">
-              LinkedIn
-            </a>
             <a href={site.whatsapp} className="label-mono hover:text-ember">
               WhatsApp
             </a>
+            {site.instagram && (
+              <a href={site.instagram} className="label-mono hover:text-ember">
+                Instagram
+              </a>
+            )}
+            {site.linkedin && (
+              <a href={site.linkedin} className="label-mono hover:text-ember">
+                LinkedIn
+              </a>
+            )}
           </div>
         </div>
       </div>

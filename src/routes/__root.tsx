@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { site, SITE_URL } from "../lib/site";
 
 function NotFoundComponent() {
   return (
@@ -84,6 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Founder-led Bali digital studio building websites, web apps and growth.",
       },
       { name: "author", content: "Akanara Digital Solutions" },
+      { name: "theme-color", content: "#14110e" },
       { property: "og:title", content: "AKANARA — Digital studio in Bali" },
       {
         property: "og:description",
@@ -91,9 +93,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Founder-led Bali digital studio building websites, web apps and growth.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "AKANARA" },
+      { property: "og:image", content: `${SITE_URL}/og.png` },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og.png` },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -123,11 +134,74 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function StructuredData() {
+  const sameAs = [site.instagram, site.linkedin].filter(Boolean);
+  const graph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: site.name,
+        legalName: site.legal,
+        url: SITE_URL,
+        logo: `${SITE_URL}/apple-touch-icon.png`,
+        image: `${SITE_URL}/og.png`,
+        email: site.email,
+        description: site.description,
+        ...(sameAs.length ? { sameAs } : {}),
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": `${SITE_URL}/#business`,
+        name: site.legal,
+        url: SITE_URL,
+        image: `${SITE_URL}/og.png`,
+        email: site.email,
+        telephone: "+6285737606345",
+        priceRange: "$$",
+        description: site.description,
+        areaServed: "Worldwide",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bali",
+          addressCountry: "ID",
+        },
+        knowsAbout: [
+          "Web design",
+          "Web development",
+          "Web apps",
+          "SEO",
+          "Performance marketing",
+          "Branding",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: site.name,
+        description: site.description,
+        publisher: { "@id": `${SITE_URL}/#organization` },
+        inLanguage: "en",
+      },
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+    />
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <StructuredData />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>

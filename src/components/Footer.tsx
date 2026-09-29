@@ -46,12 +46,16 @@ export function Footer() {
           <div>
             <p className="label-mono">Elsewhere</p>
             <div className="mt-4 flex flex-col gap-2 text-sm">
-              <a href={site.instagram} className="hover:text-ember">
-                Instagram
-              </a>
-              <a href={site.linkedin} className="hover:text-ember">
-                LinkedIn
-              </a>
+              {site.instagram && (
+                <a href={site.instagram} className="hover:text-ember">
+                  Instagram
+                </a>
+              )}
+              {site.linkedin && (
+                <a href={site.linkedin} className="hover:text-ember">
+                  LinkedIn
+                </a>
+              )}
               <Link to="/work" className="hover:text-ember">
                 Selected work
               </Link>

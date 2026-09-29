@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteShell } from "@/components/SiteShell";
 import { projects } from "@/lib/site";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/work/$slug")({
   loader: ({ params }) => {
@@ -16,18 +17,12 @@ export const Route = createFileRoute("/work/$slug")({
         meta: [{ title: "Case study — AKANARA" }, { name: "robots", content: "noindex" }],
       };
     }
-    const t = `${loaderData.project.name} — AKANARA`;
-    const d = loaderData.project.summary;
-    return {
-      meta: [
-        { title: t },
-        { name: "description", content: d },
-        { property: "og:title", content: t },
-        { property: "og:description", content: d },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
+    return seo({
+      title: `${loaderData.project.name} — AKANARA`,
+      description: loaderData.project.summary,
+      path: `/work/${loaderData.project.slug}`,
+      image: loaderData.project.image,
+    });
   },
   component: CaseStudy,
 });

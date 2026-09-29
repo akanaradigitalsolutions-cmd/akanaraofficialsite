@@ -3,22 +3,14 @@ import { SiteShell } from "@/components/SiteShell";
 import { Numbers } from "@/components/sections/Numbers";
 import { Magnetic } from "@/components/ui/magnetic";
 import { site } from "@/lib/site";
+import { seo } from "@/lib/seo";
 
 const title = "About — AKANARA";
 const description =
   "A founder-led Bali digital studio building websites, web apps and growth for brands that want to stand out.";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => seo({ title, description, path: "/about" }),
   component: AboutPage,
 });
 
