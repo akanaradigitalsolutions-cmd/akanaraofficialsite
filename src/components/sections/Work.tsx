@@ -10,6 +10,12 @@ import { useReveal } from "@/lib/motion";
 function Card({ p, index }: { p: (typeof projects)[number]; index: number }) {
   const { ref, shown } = useReveal<HTMLDivElement>(0.25);
 
+  // Real screenshot if provided, else a live thumbnail of the site (rendered by
+  // the visitor's browser via WordPress mShots — no API key needed).
+  const shot =
+    p.image ??
+    `https://s0.wp.com/mshots/v1/${encodeURIComponent(p.url)}?w=1200&h=900`;
+
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
     const r = el.getBoundingClientRect();
@@ -38,17 +44,24 @@ function Card({ p, index }: { p: (typeof projects)[number]; index: number }) {
             background: `linear-gradient(140deg, ${p.accentFrom}, ${p.accentTo})`,
           }}
         >
+          <img
+            src={shot}
+            alt={`${p.name} website`}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+            className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-deep/55 via-transparent to-transparent" />
           <div
             className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             style={{
               background:
-                "radial-gradient(28rem 28rem at var(--mx,50%) var(--my,50%), oklch(1 0 0 / 22%), transparent 60%)",
+                "radial-gradient(28rem 28rem at var(--mx,50%) var(--my,50%), oklch(1 0 0 / 18%), transparent 60%)",
             }}
           />
-          <div className="grain absolute inset-0" />
-          <span className="text-display absolute bottom-6 left-6 text-[12vw] leading-none text-stone-deep/25 md:text-[7vw]">
-            {p.name}
-          </span>
+          <div className="grain absolute inset-0 opacity-60" />
         </div>
         <div className="hairline-t mt-4 flex items-baseline justify-between py-3">
           <h3 className="text-display text-2xl transition-colors group-hover:text-ember">

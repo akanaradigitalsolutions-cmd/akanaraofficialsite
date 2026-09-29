@@ -61,6 +61,7 @@ export type Project = {
   category: string;
   url: string; // live site — cards link out to this
   summary: string;
+  image?: string; // optional real screenshot; falls back to a live thumbnail of `url`
   year?: string;
   challenge?: string;
   solution?: string;
