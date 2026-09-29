@@ -2,7 +2,7 @@ export const site = {
   name: "AKANARA",
   legal: "CV Akanara Digital Solutions",
   tagline: "Digital craft for brands that deserve to be remembered.",
-  email: "hello@akanara.studio",
+  email: "hello@akanara.com",
   phone: "+62 812 0000 0000",
   whatsapp: "https://wa.me/6281200000000",
   instagram: "https://instagram.com/akanara",
@@ -10,15 +10,16 @@ export const site = {
   address: "Jl. Raya Pererenan, Canggu — Bali, Indonesia",
 };
 
+// Capability marquee (not client names — swap for real client logos/names when ready).
 export const clients = [
-  "AMANKIRA",
-  "SOORI",
-  "RELAXHA",
-  "POTATO HOUSE",
-  "ULUWATU CLIFF",
-  "DESA SENI",
-  "NIHI",
-  "COMO BEACH",
+  "WEB DESIGN",
+  "WEB DEVELOPMENT",
+  "WEB APPS",
+  "E-COMMERCE",
+  "SEO · GEO",
+  "GOOGLE ADS",
+  "BRANDING",
+  "MOTION",
 ];
 
 export const services = [
@@ -30,27 +31,27 @@ export const services = [
   },
   {
     no: "02",
-    title: "Booking Engines & SaaS",
-    copy: "Reservation systems, marketplaces and internal platforms that hold up under real operational load.",
-    points: ["Booking engines", "Multi-property dashboards", "Payments & integrations"],
+    title: "Web Apps & Custom Software",
+    copy: "Dashboards, platforms and booking or commerce systems that hold up under real operational load.",
+    points: ["Web apps & SaaS", "Dashboards & portals", "Payments & integrations"],
   },
   {
     no: "03",
-    title: "Hospitality Marketing",
-    copy: "Direct-booking strategy for resorts, spas and villas — less OTA dependency, more owned revenue.",
-    points: ["Direct booking funnels", "Lifecycle email", "Revenue reporting"],
+    title: "Performance Marketing",
+    copy: "Google and Meta campaigns built to convert — less guesswork, more owned, measurable revenue.",
+    points: ["Google Ads", "Meta Ads", "GA4 & tracking"],
   },
   {
     no: "04",
     title: "Branding & Creative Direction",
     copy: "Identity systems with restraint: type, tone, texture and a visual language that travels.",
-    points: ["Identity systems", "Photography direction", "Brand guidelines"],
+    points: ["Identity systems", "Art & photo direction", "Brand guidelines"],
   },
   {
     no: "05",
-    title: "SEO, Ads & Social",
-    copy: "Compounding visibility. Technical SEO, paid search and social built on one measurement spine.",
-    points: ["Technical SEO", "Google Ads", "Social & content"],
+    title: "SEO · SEM · GEO",
+    copy: "Compounding visibility — technical SEO, paid search, and getting your brand cited by AI search.",
+    points: ["Technical SEO", "Local & content", "AI search (GEO)"],
   },
 ];
 
@@ -161,7 +162,7 @@ export const products = [
 ];
 
 export const processSteps = [
-  { no: "01", title: "Discover", copy: "Immersion in the property, the guest and the numbers behind them." },
+  { no: "01", title: "Discover", copy: "Immersion in your brand, your market and the numbers behind them." },
   { no: "02", title: "Strategy", copy: "Positioning, structure and the commercial case for every decision." },
   { no: "03", title: "Design", copy: "Art direction, motion language and interface systems." },
   { no: "04", title: "Build", copy: "Engineering with performance budgets, not promises." },
@@ -169,11 +170,12 @@ export const processSteps = [
   { no: "06", title: "Grow", copy: "Iteration cycles tied to revenue, not vanity metrics." },
 ];
 
+// Placeholder metrics — replace with your real numbers before going live.
 export const stats = [
-  { value: 140, suffix: "+", label: "Projects delivered" },
-  { value: 9, suffix: "", label: "Years crafting" },
-  { value: 80, suffix: "+", label: "Clients partnered" },
-  { value: 14, suffix: "", label: "Countries reached" },
+  { value: 40, suffix: "+", label: "Projects delivered" },
+  { value: 25, suffix: "+", label: "Brands partnered" },
+  { value: 95, suffix: "+", label: "Avg. Lighthouse score" },
+  { value: 24, suffix: "/7", label: "Founder-led support" },
 ];
 
 export const testimonials = [

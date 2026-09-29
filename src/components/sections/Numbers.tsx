@@ -5,7 +5,7 @@ function Stat({ value, suffix, label }: (typeof stats)[number]) {
   const { ref, value: n } = useCountUp(value);
   return (
     <div className="hairline-t pt-6">
-      <span ref={ref} className="text-display block text-6xl tabular-nums md:text-8xl">
+      <span ref={ref} className="text-display block text-5xl tabular-nums md:text-7xl">
         {n}
         {suffix}
       </span>

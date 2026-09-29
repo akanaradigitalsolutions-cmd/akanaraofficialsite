@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const text =
-  "We believe restraint is the highest form of luxury. Every project begins with the guest, ends with the numbers, and is held together by craft you can feel before you can name.";
+  "We believe restraint is the highest form of craft. Every project starts with the brand, ends with the numbers, and is held together by details you feel before you can name them.";
 
 /**
  * Pinned manifesto: the section pins while the statement lights up word by
@@ -51,7 +51,7 @@ export function Manifesto() {
     >
       <div className="mx-auto max-w-[80rem]">
         <p className="label-mono mb-10">Manifesto</p>
-        <p className="text-display text-[7vw] leading-[1.05] md:text-[4.2vw]">
+        <p className="text-display text-[5.5vw] leading-[1.1] md:text-[3.4vw]">
           {words.map((w, i) => {
             const lit = progress * words.length > i;
             return (

@@ -67,10 +67,8 @@ export function Work() {
       <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
         <div>
           <p className="label-mono">Selected work</p>
-          <h2 className="text-display mt-5 text-5xl md:text-7xl">
-            Properties, platforms
-            <br />
-            and products.
+          <h2 className="text-display mt-5 text-4xl md:text-6xl">
+            Selected work.
           </h2>
         </div>
         <Link to="/work" data-cursor="All" className="label-mono hover:text-ember">

@@ -21,7 +21,7 @@ export function Testimonials() {
             style={{ opacity: i === idx ? 1 : 0 }}
             aria-hidden={i !== idx}
           >
-            <blockquote className="text-display max-w-[24ch] text-4xl leading-[1.1] md:text-7xl">
+            <blockquote className="text-display max-w-[24ch] text-3xl leading-[1.15] md:text-6xl">
               “{t.quote}”
             </blockquote>
             <figcaption className="label-mono mt-8">

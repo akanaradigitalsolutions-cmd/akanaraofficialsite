@@ -30,7 +30,7 @@ export function Hero() {
           Bali, Indonesia — working worldwide
         </p>
 
-        <h1 className="text-display max-w-[20ch] text-[10vw] leading-[0.92] sm:text-[8vw] lg:text-[5.4vw]">
+        <h1 className="text-display max-w-[20ch] text-[8.5vw] leading-[0.95] sm:text-[7vw] lg:text-[5vw]">
           {headline.map((line, i) => (
             <span key={line} className="reveal-mask">
               <span
@@ -55,9 +55,8 @@ export function Hero() {
               transition: "all 1.4s var(--ease-lux) 0.7s",
             }}
           >
-            A digital studio for hospitality, wellness and lifestyle brands. We design and
-            engineer websites, booking systems and SaaS products with the patience of a
-            craftsman and the discipline of an operator.
+            A founder-led digital studio in Bali. We design and build websites, web apps and
+            growth for brands that want to stand out — crafted with care, engineered for speed.
           </p>
           <div
             className="flex flex-wrap gap-3"

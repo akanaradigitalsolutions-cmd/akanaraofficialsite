@@ -52,7 +52,7 @@ export function Products() {
     <section className="bg-stone-deep py-28 md:py-40">
       <div className="mx-auto max-w-[110rem] px-6 md:px-12">
         <p className="label-mono">In-house products</p>
-        <h2 className="text-display mt-5 max-w-[16ch] text-5xl md:text-7xl">
+        <h2 className="text-display mt-5 max-w-[16ch] text-4xl md:text-6xl">
           We build our own software, too.
         </h2>
         <div className="mt-16 grid gap-8 md:grid-cols-3">

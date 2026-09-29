@@ -27,7 +27,7 @@ export function Process() {
   return (
     <section className="mx-auto max-w-[110rem] px-6 py-28 md:px-12 md:py-40">
       <p className="label-mono">How we work</p>
-      <h2 className="text-display mt-5 text-5xl md:text-7xl">Six deliberate steps.</h2>
+      <h2 className="text-display mt-5 text-4xl md:text-6xl">Six deliberate steps.</h2>
 
       <div ref={wrap} className="relative mt-20 pl-10 md:pl-24">
         <div className="absolute left-0 top-0 h-full w-px bg-border md:left-8">
