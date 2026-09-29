@@ -1,5 +1,5 @@
 import { ClientOnly } from "@tanstack/react-router";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 
 // 3D is lazy + client-only: the Canvas must never render on the server and the
 // three.js bundle must not block first paint.
@@ -14,15 +14,20 @@ function Fallback() {
 }
 
 /**
- * Only run the WebGL hero on capable desktops. Phones, low-core devices and
- * reduced-motion users get the lightweight gradient fallback — WebGL + a
- * per-frame render loop is brutal on throttled mobile CPUs and was the main
- * cause of poor mobile performance (huge Total Blocking Time / Speed Index).
- * Because the three.js bundle is imported only when <ObsidianScene /> renders,
- * gating it here also means phones never download or parse it.
+ * Gates the WebGL hero for performance without changing the visuals:
+ *  - Capability: only capable desktops run it (>=768px, not reduced-motion,
+ *    >=4 cores). Phones keep the lightweight gradient fallback.
+ *  - Deferral: the scene mounts only when its container nears the viewport AND
+ *    the browser is idle. So the Hero's 3D loads just after first paint (out of
+ *    the critical load path) and the CTA's 3D loads only when scrolled near —
+ *    instead of both initializing at once during load. The animation is
+ *    unchanged; only its start time moves.
  */
 function Scene() {
+  const holder = useRef<HTMLDivElement>(null);
   const [allowed, setAllowed] = useState(false);
+  const [mount, setMount] = useState(false);
+
   useEffect(() => {
     const wideEnough = window.matchMedia("(min-width: 768px)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,11 +35,35 @@ function Scene() {
     setAllowed(wideEnough && !reduced && cores >= 4);
   }, []);
 
-  if (!allowed) return <Fallback />;
+  useEffect(() => {
+    if (!allowed || !holder.current) return;
+    const el = holder.current;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        io.disconnect();
+        const w = window as typeof window & {
+          requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+        };
+        if (w.requestIdleCallback) w.requestIdleCallback(() => setMount(true), { timeout: 1500 });
+        else window.setTimeout(() => setMount(true), 300);
+      },
+      { rootMargin: "200px" }, // start loading a little before it enters view
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [allowed]);
+
   return (
-    <Suspense fallback={<Fallback />}>
-      <ObsidianScene />
-    </Suspense>
+    <div ref={holder} className="h-full w-full">
+      {allowed && mount ? (
+        <Suspense fallback={<Fallback />}>
+          <ObsidianScene />
+        </Suspense>
+      ) : (
+        <Fallback />
+      )}
+    </div>
   );
 }
 
