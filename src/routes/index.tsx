@@ -6,7 +6,6 @@ import { Manifesto } from "@/components/sections/Manifesto";
 import { ServicesScroll } from "@/components/sections/ServicesScroll";
 import { Work } from "@/components/sections/Work";
 import { Process } from "@/components/sections/Process";
-import { Numbers } from "@/components/sections/Numbers";
 import { CTA } from "@/components/sections/CTA";
 import { seo } from "@/lib/seo";
 
@@ -28,7 +27,7 @@ function Index() {
       <ServicesScroll />
       <Work />
       <Process />
-      <Numbers />
+      {/* <Numbers /> hidden until real stats are ready */}
       <CTA />
     </SiteShell>
   );

@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteShell } from "@/components/SiteShell";
-import { Numbers } from "@/components/sections/Numbers";
 import { Magnetic } from "@/components/ui/magnetic";
 import { site } from "@/lib/site";
 import { seo } from "@/lib/seo";
@@ -54,7 +53,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <Numbers />
+      {/* <Numbers /> hidden until real stats are ready */}
 
       <section className="mx-auto max-w-[110rem] px-6 py-24 md:px-12 md:py-32">
         <p className="label-mono">Values</p>
