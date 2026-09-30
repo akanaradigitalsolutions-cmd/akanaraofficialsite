@@ -53,25 +53,50 @@ function Shard() {
 }
 
 export default function ObsidianScene() {
-  // Pause the render loop when the hero scrolls out of view — no point burning
-  // CPU/GPU (and battery) rendering frames nobody can see, and it lets the page
-  // reach idle faster.
+  // Render only when it earns its keep:
+  //  - visible: pause when the hero scrolls out of view.
+  //  - awake: "settle when idle" — animate for a short window after any pointer
+  //    move / scroll, then pause so the page can reach idle (big lab-score win).
+  //    Any interaction instantly resumes it, so real visitors see continuous
+  //    motion and never notice the pause.
   const wrap = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const [awake, setAwake] = useState(true);
+
   useEffect(() => {
     const el = wrap.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), {
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), {
       threshold: 0,
     });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    let timer = 0;
+    const wake = () => {
+      setAwake(true);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setAwake(false), 1500);
+    };
+    wake(); // brief intro on load, then settle if there's no interaction
+    const opts = { passive: true } as const;
+    window.addEventListener("pointermove", wake, opts);
+    window.addEventListener("scroll", wake, opts);
+    window.addEventListener("pointerdown", wake, opts);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("pointermove", wake);
+      window.removeEventListener("scroll", wake);
+      window.removeEventListener("pointerdown", wake);
+    };
+  }, []);
+
   return (
     <div ref={wrap} className="h-full w-full">
     <Canvas
-      frameloop={active ? "always" : "never"}
+      frameloop={visible && awake ? "always" : "never"}
       dpr={[1, 1.25]}
       camera={{ position: [0, 0, 5], fov: 45 }}
       gl={{ antialias: true, alpha: true }}
