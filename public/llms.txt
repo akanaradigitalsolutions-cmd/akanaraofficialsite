@@ -1,36 +1,36 @@
 # AKANARA — Digital Studio in Bali
 
-> Akanara (legal name: CV Akanara Digital Solutions) is a founder-led digital
+> Akanara (legal name CV Akanara Digital Solutions) is a founder-led digital
 > studio based in Bali, Indonesia, working with clients worldwide. We design and
 > build websites, web apps and custom software, and drive growth through SEO,
 > performance marketing and branding.
 
 ## About
 
-- Name: AKANARA (CV Akanara Digital Solutions)
-- Location: Bali, Indonesia — working worldwide
-- Contact: hello@akanara.com · WhatsApp +62 857 3760 6345
-- Positioning: founder-led studio; every project led by a senior design + engineering pair.
+- [Akanara website](https://akanara.com)
+- [About the studio](https://akanara.com/about)
+- Location: Bali, Indonesia — working worldwide.
+- Founder-led; every project is led by a senior design + engineering pair.
 
 ## Services
 
-- Web Design & Development — editorial, motion-led, high-performance websites.
-- Web Apps & Custom Software — dashboards, platforms, booking and commerce systems.
-- Performance Marketing — Google Ads, Meta Ads, GA4 and conversion tracking.
-- Branding & Creative Direction — identity systems, art direction, guidelines.
-- SEO · SEM · GEO — technical SEO, paid search, and generative-engine optimization.
+- [Web Design & Development](https://akanara.com/services) — editorial, motion-led, high-performance websites.
+- [Web Apps & Custom Software](https://akanara.com/services) — dashboards, platforms, booking and commerce systems.
+- [Performance Marketing](https://akanara.com/services) — Google Ads, Meta Ads, GA4 and conversion tracking.
+- [Branding & Creative Direction](https://akanara.com/services) — identity systems, art direction, guidelines.
+- [SEO · SEM · GEO](https://akanara.com/services) — technical SEO, paid search, and generative-engine optimization.
 
 ## Selected work
 
-- Relaxha (relaxha.com) — spa & wellness booking web app.
-- Natajiwa Village (natajiwa.com) — boutique hospitality website, Kerobokan, Bali.
-- Kintamani Dirt Bike Adventure (kintamanidirtbikeadventure.com) — tour operator website.
-- Maguska Tour (maguskatour.com) — Bali travel & tours website.
-- Rarama Living Studio (raramalivingstudio.com) — hotel & stay website, Bali.
-- Akalink (akalink.id) — custom web application.
+- [Relaxha](https://relaxha.com) — spa & wellness booking web app.
+- [Natajiwa Village](https://natajiwa.com) — boutique hospitality website in Kerobokan, Bali.
+- [Kintamani Dirt Bike Adventure](https://kintamanidirtbikeadventure.com) — tour operator website.
+- [Maguska Tour](https://maguskatour.com) — Bali travel & tours website.
+- [Rarama Living Studio](https://raramalivingstudio.com) — hotel & stay website, Bali.
+- [Akalink](https://akalink.id) — custom web application.
 
 ## Contact
 
-- Website: https://akanara.com
-- Email: hello@akanara.com
-- WhatsApp: https://wa.me/6285737606345
+- [Email: hello@akanara.com](mailto:hello@akanara.com)
+- [WhatsApp: +62 857 3760 6345](https://wa.me/6285737606345)
+- [Contact page](https://akanara.com/contact)

@@ -95,6 +95,7 @@ export function Nav() {
         }`}
         style={{ clipPath: open ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)" }}
         aria-hidden={!open}
+        inert={!open}
       >
         <div className="mx-auto flex h-full max-w-[110rem] flex-col justify-center px-6 md:px-12">
           {links.map((l, i) => (

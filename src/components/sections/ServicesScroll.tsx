@@ -62,7 +62,7 @@ export function ServicesScroll() {
   return (
     <section ref={section} className="relative overflow-hidden bg-background py-24 md:py-0">
       <div className="mx-auto max-w-[110rem] px-6 pb-10 md:px-12 md:pt-28">
-        <p className="label-mono">What we do</p>
+        <h2 className="label-mono">What we do</h2>
       </div>
       <div
         ref={track}
